@@ -160,6 +160,133 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
 </head>
 <body>
 
+<style>
+#login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0a1628}
+#login-overlay.hidden{display:none}
+.login-bg{position:absolute;inset:0;pointer-events:none}
+.login-bg canvas{width:100%;height:100%}
+.login-card{position:relative;z-index:2;width:380px;background:rgba(13,30,53,.95);border:1px solid rgba(45,212,191,.25);border-radius:20px;padding:44px 40px 40px;box-shadow:0 0 60px rgba(45,212,191,.08)}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo .avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#2dd4bf,#0891b2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#0a1628;margin:0 auto 14px;box-shadow:0 0 0 8px rgba(45,212,191,.1)}
+.login-logo h1{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.login-logo p{font-size:12px;color:var(--text2);letter-spacing:.5px}
+.login-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(45,212,191,.3),transparent);margin-bottom:28px}
+.login-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;display:block}
+.login-field{position:relative;margin-bottom:18px}
+.login-field input{width:100%;background:rgba(10,22,40,.8);border:1px solid rgba(45,212,191,.2);border-radius:10px;padding:13px 44px 13px 16px;font-size:14px;color:#fff;font-family:inherit;outline:none;transition:border-color .2s;box-sizing:border-box}
+.login-field input::placeholder{color:rgba(148,163,184,.4)}
+.login-field input:focus{border-color:rgba(45,212,191,.6);background:rgba(10,22,40,1)}
+.login-field .field-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:rgba(45,212,191,.5);font-size:16px;pointer-events:none}
+.login-field .toggle-pw{pointer-events:all;cursor:pointer;transition:color .2s}
+.login-field .toggle-pw:hover{color:var(--accent)}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#2dd4bf,#0891b2);border:none;border-radius:10px;font-size:15px;font-weight:700;color:#0a1628;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s;margin-top:6px;letter-spacing:.5px}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,212,191,.25)}
+.login-btn:active{transform:translateY(0)}
+.login-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-top:14px;display:none;text-align:center}
+.login-error.show{display:block}
+.login-footer{text-align:center;margin-top:24px;font-size:11px;color:rgba(148,163,184,.4)}
+.login-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:rgba(45,212,191,.5);border:1px solid rgba(45,212,191,.15);border-radius:20px;padding:4px 12px;margin-top:8px}
+.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+</style>
+
+<div id="login-overlay">
+  <div class="login-bg"><canvas id="loginCanvas"></canvas></div>
+  <div class="login-card" id="loginCard">
+    <div class="login-logo">
+      <div class="avatar">EH</div>
+      <h1>Dr ENNAJI Hind</h1>
+      <p>Homéopathie & Pathologies Estivales</p>
+    </div>
+    <div class="login-divider"></div>
+    <label class="login-label">Identifiant</label>
+    <div class="login-field">
+      <input type="text" id="loginUser" placeholder="Entrez votre identifiant" autocomplete="username" spellcheck="false">
+      <span class="field-icon">&#9673;</span>
+    </div>
+    <label class="login-label">Mot de passe</label>
+    <div class="login-field">
+      <input type="password" id="loginPass" placeholder="Entrez votre mot de passe" autocomplete="current-password" id="loginPass">
+      <span class="field-icon toggle-pw" id="togglePw" onclick="togglePassword()">&#128065;</span>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Accéder à la formation &rarr;</button>
+    <div class="login-error" id="loginError">Identifiant ou mot de passe incorrect</div>
+    <div class="login-footer">
+      Accès réservé aux participants inscrits
+      <br><div class="login-badge">&#128274; Connexion sécurisée</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('loginCanvas');
+  if(!c)return;
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const x=c.getContext('2d');
+  const pts=Array.from({length:80},()=>({
+    x:Math.random()*c.width,y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+    r:Math.random()*1.8+.3,a:Math.random(),da:Math.random()*.008-.004,
+    col:Math.random()>.6?'45,212,191':'245,158,11'
+  }));
+  function tick(){
+    x.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.a+=p.da;
+      if(p.a<0||p.a>1)p.da*=-1;
+      if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=`rgba(${p.col},${p.a*.5})`;x.fill();
+    });
+    pts.forEach((p,i)=>{
+      for(let j=i+1;j<pts.length;j++){
+        const dx=p.x-pts[j].x,dy=p.y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(pts[j].x,pts[j].y);
+          x.strokeStyle=`rgba(45,212,191,${.05*(1-d/100)})`;x.lineWidth=.5;x.stroke();}
+      }
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+  window.addEventListener('resize',()=>{c.width=window.innerWidth;c.height=window.innerHeight;});
+})();
+
+function togglePassword(){
+  const inp=document.getElementById('loginPass');
+  const icon=document.getElementById('togglePw');
+  if(inp.type==='password'){inp.type='text';icon.innerHTML='&#128064;';}
+  else{inp.type='password';icon.innerHTML='&#128065;';}
+}
+
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  const card=document.getElementById('loginCard');
+  if(u==='DrHind'&&p==='Hind2026!'){
+    document.getElementById('login-overlay').style.transition='opacity .6s';
+    document.getElementById('login-overlay').style.opacity='0';
+    setTimeout(()=>{document.getElementById('login-overlay').classList.add('hidden');},600);
+  } else {
+    err.classList.add('show');
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    document.getElementById('loginPass').value='';
+    setTimeout(()=>err.classList.remove('show'),3000);
+  }
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!document.getElementById('login-overlay').classList.contains('hidden')){
+    doLogin();
+  }
+});
+</script>
+
+
 <div id="app">
 <div id="progress-bar" style="width:0%"></div>
 <div id="slide-counter">1 / 53</div>
@@ -187,24 +314,196 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
 </div>
 <!-- SLIDE 2 -->
 <div class="slide" id="s2">
-  <div class="content-slide">
-    <div class="slide-header">
-      <div class="icon">📋</div>
-      <h2>Plan de la Formation</h2>
+<style>
+.plan-wow{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.plan-wow-bg{position:absolute;inset:0;pointer-events:none}
+.plan-wow-bg canvas{position:absolute;inset:0;width:100%;height:100%}
+.plan-header{position:relative;z-index:2;text-align:center;margin-bottom:28px}
+.plan-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.plan-header h2{font-size:clamp(22px,3vw,38px);font-weight:700;color:#fff;line-height:1.1}
+.plan-header h2 span{color:var(--accent)}
+.plan-header .line{width:50px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));margin:14px auto 0;border-radius:2px}
+.plan-timeline{position:relative;z-index:2;display:flex;align-items:flex-start;gap:0;width:90%;max-width:1100px}
+.plan-col{flex:1;display:flex;flex-direction:column;gap:0;position:relative}
+.plan-col-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);text-align:center;margin-bottom:10px;padding:4px 0;border-bottom:1px solid rgba(245,158,11,.2)}
+.plan-node{position:relative;margin:4px 6px;cursor:default}
+.plan-node-inner{background:rgba(14,30,55,.85);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:all .25s;position:relative;overflow:hidden}
+.plan-node-inner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;transition:opacity .25s}
+.plan-node.c1 .plan-node-inner::before{background:var(--accent)}
+.plan-node.c2 .plan-node-inner::before{background:#f59e0b}
+.plan-node.c3 .plan-node-inner::before{background:#a78bfa}
+.plan-node.c4 .plan-node-inner::before{background:#34d399}
+.plan-node.c5 .plan-node-inner::before{background:#f472b6}
+.plan-node-inner:hover{border-color:var(--accent);background:rgba(45,212,191,.08);transform:translateY(-2px)}
+.plan-node-num{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.plan-node.c1 .plan-node-num{color:var(--accent)}
+.plan-node.c2 .plan-node-num{color:#f59e0b}
+.plan-node.c3 .plan-node-num{color:#a78bfa}
+.plan-node.c4 .plan-node-num{color:#34d399}
+.plan-node.c5 .plan-node-num{color:#f472b6}
+.plan-node-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px;line-height:1.2}
+.plan-node-sub{font-size:10px;color:var(--text2);line-height:1.4}
+.plan-connector{display:flex;align-items:center;justify-content:center;padding:0 2px;margin-top:28px}
+.plan-connector svg{opacity:.3}
+.plan-dots{display:flex;gap:6px;justify-content:center;margin-top:16px;position:relative;z-index:2}
+.plan-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .3s}
+.plan-dot.act{background:var(--accent)}
+</style>
+<div class="plan-wow">
+  <div class="plan-wow-bg"><canvas id="planCanvas"></canvas></div>
+  <div class="plan-header">
+    <div class="eyebrow">Webinaire · 02 Juillet 2026</div>
+    <h2>Plan de la <span>Formation</span></h2>
+    <div class="line"></div>
+  </div>
+  <div class="plan-timeline" id="planTimeline">
+    <div class="plan-col">
+      <div class="plan-col-label">Fondements</div>
+      <div class="plan-node c1">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">I · Introduction</div>
+          <div class="plan-node-title">Place de l'Homéopathie</div>
+          <div class="plan-node-sub">Population à risque · Objectifs · Limites</div>
+        </div>
+      </div>
     </div>
-    <div class="plan-grid" style="align-content:start">
-      <div class="plan-item"><div class="plan-num">I</div><div class="plan-text"><h3>Introduction</h3><p>Place de l'homéopathie · Population à risque · Objectifs</p></div></div>
-      <div class="plan-item"><div class="plan-num">A</div><div class="plan-text"><h3>Chaleur & Soleil</h3><p>Coup de chaleur · Hyperhidrose · Fatigue estivale · Coups de soleil · Lucites · Herpès solaire</p></div></div>
-      <div class="plan-item"><div class="plan-num">B</div><div class="plan-text"><h3>Manifestations Circulatoires</h3><p>Insuffisance veineuse · Jambes lourdes · Varices · Hémorroïdes · Rétention d'eau</p></div></div>
-      <div class="plan-item"><div class="plan-num">C</div><div class="plan-text"><h3>Baignades & Plein air</h3><p>Otites externes · Conjonctivites · Piqûres d'insectes · Méduses</p></div></div>
-      <div class="plan-item"><div class="plan-num">D</div><div class="plan-text"><h3>Voyages & Vacances</h3><p>Mal des transports · Décalage horaire · Nostalgie · Sommeil · Rhinites · Traumatismes</p></div></div>
-      <div class="plan-item"><div class="plan-num">E</div><div class="plan-text"><h3>Troubles Digestifs</h3><p>Excès · Ballonnements · Coliques · Reflux · Gastro-entérites · Constipation</p></div></div>
-      <div class="plan-item"><div class="plan-num">F</div><div class="plan-text"><h3>Urinaire & Gynécologique</h3><p>Cystites estivales · Mycoses vulvo-vaginales</p></div></div>
-      <div class="plan-item"><div class="plan-num">III</div><div class="plan-text"><h3>Anticiper — Approche du Terrain</h3><p>4 profils estivaux · Allergies saisonnières · Homéopathie et vacances</p></div></div>
-      <div class="plan-item"><div class="plan-num">IV</div><div class="plan-text"><h3>Cas Cliniques</h3><p>Vignettes interactives · Quiz flip cards</p></div></div>
-      <div class="plan-item"><div class="plan-num">V</div><div class="plan-text"><h3>Conclusion</h3><p>Synthèse · Points clés · Questions</p></div></div>
+    <div class="plan-connector"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12M10 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="plan-col">
+      <div class="plan-col-label">Pathologies II</div>
+      <div class="plan-node c2">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">A · Chaleur & Soleil</div>
+          <div class="plan-node-title">Coup de chaleur · Hyperhidrose</div>
+          <div class="plan-node-sub">Fatigue · Coups de soleil · Lucites · Herpès</div>
+        </div>
+      </div>
+      <div class="plan-node c2">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">B · Circulatoire</div>
+          <div class="plan-node-title">Varices · Jambes lourdes</div>
+          <div class="plan-node-sub">Hémorroïdes · Rétention d'eau</div>
+        </div>
+      </div>
+      <div class="plan-node c2">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">C · Baignades</div>
+          <div class="plan-node-title">Otites · Conjonctivites</div>
+          <div class="plan-node-sub">Piqûres d'insectes · Méduses</div>
+        </div>
+      </div>
+    </div>
+    <div class="plan-connector"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12M10 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="plan-col">
+      <div class="plan-col-label">Pathologies II (suite)</div>
+      <div class="plan-node c3">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">D · Voyages & Vacances</div>
+          <div class="plan-node-title">Transports · Décalage horaire</div>
+          <div class="plan-node-sub">Nostalgie · Sommeil · Rhinites · Traumatismes</div>
+        </div>
+      </div>
+      <div class="plan-node c3">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">E · Troubles Digestifs</div>
+          <div class="plan-node-title">Excès · Ballonnements · Coliques</div>
+          <div class="plan-node-sub">Reflux · Gastro-entérites · Constipation</div>
+        </div>
+      </div>
+      <div class="plan-node c3">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">F · Urinaire & Gynéco</div>
+          <div class="plan-node-title">Cystites estivales</div>
+          <div class="plan-node-sub">Mycoses vulvo-vaginales</div>
+        </div>
+      </div>
+    </div>
+    <div class="plan-connector"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12M10 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="plan-col">
+      <div class="plan-col-label">Terrain & Prévention</div>
+      <div class="plan-node c4">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">III · Approche du Terrain</div>
+          <div class="plan-node-title">4 Profils Estivaux</div>
+          <div class="plan-node-sub">Allergies · Homéopathie & Vacances</div>
+        </div>
+      </div>
+    </div>
+    <div class="plan-connector"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12M10 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="plan-col">
+      <div class="plan-col-label">Pratique & Synthèse</div>
+      <div class="plan-node c5">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">IV · Cas Cliniques</div>
+          <div class="plan-node-title">Vignettes Interactives</div>
+          <div class="plan-node-sub">Quiz flip cards · Protocoles</div>
+        </div>
+      </div>
+      <div class="plan-node c5">
+        <div class="plan-node-inner">
+          <div class="plan-node-num">V · Conclusion</div>
+          <div class="plan-node-title">Synthèse & Points clés</div>
+          <div class="plan-node-sub">Questions · Discussion ouverte</div>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="plan-dots">
+    <div class="plan-dot act"></div><div class="plan-dot"></div><div class="plan-dot"></div>
+    <div class="plan-dot"></div><div class="plan-dot"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const canvas = document.getElementById('planCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles=[], animId;
+  function resize(){
+    W=canvas.width=canvas.offsetWidth;
+    H=canvas.height=canvas.offsetHeight;
+  }
+  function initParticles(){
+    particles=[];
+    const count=60;
+    for(let i=0;i<count;i++){
+      particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,
+        vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+        a:Math.random(),da:Math.random()*.01-.005,
+        c:Math.random()>.7?'45,212,191':'245,158,11'});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(10,22,40,0.0)';ctx.fillRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.a+=p.da;
+      if(p.a<=0||p.a>=1)p.da*=-1;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=\`rgba(\${p.c},\${p.a*0.6})\`;ctx.fill();
+    });
+    particles.forEach((p,i)=>{
+      for(let j=i+1;j<particles.length;j++){
+        const dx=p.x-particles[j].x,dy=p.y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=\`rgba(45,212,191,\${0.04*(1-d/120)})\`;
+          ctx.lineWidth=0.5;ctx.stroke();
+        }
+      }
+    });
+    animId=requestAnimationFrame(draw);
+  }
+  resize();initParticles();draw();
+  const obs=new ResizeObserver(()=>{cancelAnimationFrame(animId);resize();initParticles();draw();});
+  obs.observe(canvas.parentElement);
+  const slide=canvas.closest('.slide');
+  const mo=new MutationObserver(()=>{if(!slide.classList.contains('active'))cancelAnimationFrame(animId);else draw();});
+  if(slide)mo.observe(slide,{attributes:true,attributeFilter:['class']});
+})();
+</script>
 </div>
 <!-- SLIDE 3 -->
 <div class="slide" id="s3">
