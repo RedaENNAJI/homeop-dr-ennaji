@@ -2996,12 +2996,34 @@ function showSlide(n){
   var id = slides[n] && slides[n].id;
   if(id) updateRoadmaps(id);
   var m=document.getElementById('bgMusic');
+  var sections=['s1','s3','s5','s13','s18','s23','s29','s38','s44','s49','s_fin'];
   if(id==='s_fin'){
     startConfetti('confettiCanvas');
     if(m&&!m.paused)m.playbackRate=1.4;
+    // Musique festive sur fin
+    if(m&&m.paused){m.play();m.volume=0.42;}
+  } else if(sections.indexOf(id)>-1){
+    stopConfetti('confettiCanvas');
+    // Fade in sur sections
+    if(m){
+      m.playbackRate=1.0;
+      if(m.paused){m.play();}
+      clearInterval(m.__fi);
+      m.__fi=setInterval(function(){
+        m.volume=Math.min(.42,m.volume+.02);
+        if(m.volume>=.42)clearInterval(m.__fi);
+      },80);
+    }
   } else {
     stopConfetti('confettiCanvas');
-    if(m&&!m.paused)m.playbackRate=1.0;
+    // Fade out sur slides de contenu
+    if(m&&!m.paused){
+      clearInterval(m.__fi);
+      m.__fi=setInterval(function(){
+        m.volume=Math.max(0,m.volume-.02);
+        if(m.volume<=0){m.pause();clearInterval(m.__fi);}
+      },80);
+    }
   }
 }
 
