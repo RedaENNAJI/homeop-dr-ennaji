@@ -156,12 +156,40 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
 .cas-protocol h4{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:10px}
 .cas-protocol-item{font-size:12px;color:#d1fae5;margin-bottom:7px;line-height:1.5;padding-left:14px;position:relative}
 .cas-protocol-item::before{content:'✓';position:absolute;left:0;color:var(--green)}
+
+/* ═══ ROADMAP BAR ═══ */
+.roadmap-bar{position:absolute;top:0;left:0;right:0;z-index:10;padding:8px 20px 6px;background:rgba(8,18,34,.82);backdrop-filter:blur(10px);border-bottom:1px solid rgba(45,212,191,.15);display:flex;align-items:center;justify-content:center}
+.roadmap-steps{display:flex;flex-direction:row;align-items:center;width:100%;max-width:920px;gap:0}
+.roadmap-step{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;min-width:60px}
+.roadmap-connector{flex:1;height:2px;position:relative;margin-bottom:18px;min-width:10px}
+.roadmap-connector-bg{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:2px}
+.roadmap-connector-fill{position:absolute;inset:0;border-radius:2px;width:0;transition:width .6s ease;background:linear-gradient(90deg,#2dd4bf,#f59e0b)}
+.roadmap-connector-fill.done{width:100%}
+.roadmap-connector-fill.half{width:50%}
+.roadmap-step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid transparent;transition:all .4s;flex-shrink:0}
+.roadmap-step-circle.done{background:rgba(45,212,191,.2);border-color:#2dd4bf}
+.roadmap-step-circle.done::after{content:'✓';color:#2dd4bf;font-size:11px;font-weight:800;display:block}
+.roadmap-step-circle.done .rm-icon{display:none}
+.roadmap-step-circle.active{background:rgba(45,212,191,.25);border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15),0 0 14px rgba(45,212,191,.4);animation:rmPulse 2s ease-in-out infinite}
+.roadmap-step-circle.upcoming{background:rgba(30,58,95,.5);border-color:rgba(255,255,255,.1)}
+.rm-icon{font-size:11px;line-height:1}
+.roadmap-step-label{font-size:8px;font-weight:600;margin-top:3px;letter-spacing:.2px;white-space:nowrap;transition:color .3s}
+.roadmap-step-label.done{color:#2dd4bf}
+.roadmap-step-label.active{color:#fff}
+.roadmap-step-label.upcoming{color:rgba(148,163,184,.4)}
+@keyframes rmPulse{0%,100%{box-shadow:0 0 0 4px rgba(45,212,191,.12),0 0 12px rgba(45,212,191,.3)}50%{box-shadow:0 0 0 8px rgba(45,212,191,.08),0 0 22px rgba(45,212,191,.5)}}
+/* Push section content below the bar */
+.has-roadmap .section-intro{padding-top:52px!important}
+.has-roadmap .hero{padding-top:60px!important}
+/* Login overlay - FULL screen, above everything */
+#login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0a1628;overflow:hidden}
+#login-overlay.hidden{display:none!important}
 </style>
 </head>
 <body>
 
 <style>
-#login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#0a1628}
+/* login-overlay in main CSS above */
 #login-overlay.hidden{display:none}
 .login-bg{position:absolute;inset:0;pointer-events:none}
 .login-bg canvas{width:100%;height:100%}
