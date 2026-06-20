@@ -3110,6 +3110,19 @@ function updateUI() {
 function changeSlide(dir) {
   current = Math.max(0, Math.min(total-1, current + dir));
   updateUI();
+  // Init audio on first interaction
+  if(typeof audioCtx !== 'undefined' && !audioCtx && typeof initAudio === 'function') {
+    try { initAudio(); startCalmMusic(); } catch(e) {}
+  }
+  // Roadmap + audio + confetti
+  setTimeout(function() {
+    try {
+      const curId = slides[current] && slides[current].id;
+      if(curId && typeof updateRoadmaps === 'function') updateRoadmaps(curId);
+      if(curId && typeof handleAudioForSlide === 'function') handleAudioForSlide(curId);
+      if(curId && curId !== 's_fin' && typeof stopConfetti === 'function') stopConfetti('confettiCanvas');
+    } catch(e) {}
+  }, 10);
 }
 
 document.addEventListener('keydown', e => {
@@ -3258,6 +3271,7 @@ function stopConfetti(canvasId) {
    AUDIO ENGINE — Web Audio API
 ═══════════════════════════════════════════ */
 let audioCtx = null, masterGain = null, musicNodes = [], musicMuted = false, musicStarted = false;
+window.audioCtx = null; // global ref
 const SECTION_SLIDES = ['s1','s3','s5','s13','s18','s23','s29','s38','s44','s49','s_fin'];
 
 function initAudio() {
@@ -3430,36 +3444,7 @@ function handleAudioForSlide(slideId) {
   }
 }
 
-/* ═══════════════════════════════════════════
-   HOOK INTO changeSlide
-═══════════════════════════════════════════ */
-const _origChangeSlide = changeSlide;
-changeSlide = function(dir) {
-  _origChangeSlide(dir);
-  // Init audio on first interaction
-  if(!audioCtx) {
-    initAudio();
-    startCalmMusic();
-    musicStarted = true;
-  }
-  const slides = document.querySelectorAll('.slide');
-  const curId = slides[current]?.id;
-  if(curId) {
-    updateRoadmaps(curId);
-    handleAudioForSlide(curId);
-    if(curId !== 's_fin') stopConfetti('confettiCanvas');
-  }
-};
-
-// Also hook keyboard
-const _origKeydown = document.onkeydown;
-document.addEventListener('keydown', function(e) {
-  if((e.key==='ArrowRight'||e.key===' '||e.key==='ArrowLeft') && !audioCtx) {
-    initAudio();
-    startCalmMusic();
-    musicStarted = true;
-  }
-});
+/* hook removed - integrated below */
 
 /* ═══════════════════════════════════════════
    MUSIC TOGGLE BUTTON
@@ -3470,27 +3455,31 @@ musicBtn.innerHTML = '🎵';
 musicBtn.title = 'Couper / Activer la musique';
 musicBtn.style.cssText = 'position:fixed;bottom:18px;right:18px;z-index:200;width:38px;height:38px;border-radius:50%;background:rgba(10,22,40,.85);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(6px)';
 musicBtn.addEventListener('click', () => {
-  musicMuted = !musicMuted;
-  if(musicMuted) {
-    fadeOut(0.4);
-    musicBtn.innerHTML = '🔇';
-    musicBtn.style.color = '#64748b';
-    musicBtn.style.borderColor = 'rgba(100,116,139,.3)';
-  } else {
-    if(!audioCtx) { initAudio(); startCalmMusic(); }
-    fadeIn(0.6);
-    musicBtn.innerHTML = '🎵';
-    musicBtn.style.color = '#2dd4bf';
-    musicBtn.style.borderColor = 'rgba(45,212,191,.3)';
-  }
+  try {
+    musicMuted = !musicMuted;
+    if(musicMuted) {
+      if(typeof fadeOut === 'function') fadeOut(0.4);
+      musicBtn.innerHTML = '🔇';
+      musicBtn.style.color = '#64748b';
+      musicBtn.style.borderColor = 'rgba(100,116,139,.3)';
+    } else {
+      if(!audioCtx) { initAudio(); startCalmMusic(); }
+      if(typeof fadeIn === 'function') fadeIn(0.6);
+      musicBtn.innerHTML = '🎵';
+      musicBtn.style.color = '#2dd4bf';
+      musicBtn.style.borderColor = 'rgba(45,212,191,.3)';
+    }
+  } catch(e) { console.log('audio btn:', e); }
 });
 document.body.appendChild(musicBtn);
 
 // Init roadmap on load
 window.addEventListener('load', () => {
-  const slides = document.querySelectorAll('.slide');
-  const curId = slides[current]?.id || 's1';
-  updateRoadmaps(curId);
+  try {
+    const allSlides = document.querySelectorAll('.slide');
+    const curId = (allSlides[current] && allSlides[current].id) || 's1';
+    if(typeof updateRoadmaps === 'function') updateRoadmaps(curId);
+  } catch(e) { console.log('roadmap init:', e); }
 });
 </script>
 
