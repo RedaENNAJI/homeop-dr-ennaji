@@ -325,32 +325,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
     </button>
   </div>
 </div>
-<script>
-(function(){
-  const slide = document.getElementById('s_fin');
-  const obs = new MutationObserver(() => {
-    if(slide.classList.contains('active')) {
-      startConfetti('confettiCanvas');
-    } else {
-      stopConfetti('confettiCanvas');
-    }
-  });
-  obs.observe(slide, {attributes:true, attributeFilter:['class']});
-})();
 
-function restartPresentation() {
-  current = 0;
-  updateUI();
-  const slides = document.querySelectorAll('.slide');
-  updateRoadmaps(slides[0]?.id || 's1');
-  stopConfetti('confettiCanvas');
-  if(audioCtx && !musicMuted) {
-    stopMusic();
-    startCalmMusic();
-    fadeIn(1.2);
-  }
-}
-</script>
 </div>
 
 </div>
@@ -649,58 +624,7 @@ document.addEventListener('keydown',function(e){
     <div class="plan-dot"></div><div class="plan-dot"></div>
   </div>
 </div>
-<script>
-(function(){
-  const canvas = document.getElementById('planCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, particles=[], animId;
-  function resize(){
-    W=canvas.width=canvas.offsetWidth;
-    H=canvas.height=canvas.offsetHeight;
-  }
-  function initParticles(){
-    particles=[];
-    const count=60;
-    for(let i=0;i<count;i++){
-      particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,
-        vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
-        a:Math.random(),da:Math.random()*.01-.005,
-        c:Math.random()>.7?'45,212,191':'245,158,11'});
-    }
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='rgba(10,22,40,0.0)';ctx.fillRect(0,0,W,H);
-    particles.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;p.a+=p.da;
-      if(p.a<=0||p.a>=1)p.da*=-1;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=\`rgba(\${p.c},\${p.a*0.6})\`;ctx.fill();
-    });
-    particles.forEach((p,i)=>{
-      for(let j=i+1;j<particles.length;j++){
-        const dx=p.x-particles[j].x,dy=p.y-particles[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<120){
-          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle=\`rgba(45,212,191,\${0.04*(1-d/120)})\`;
-          ctx.lineWidth=0.5;ctx.stroke();
-        }
-      }
-    });
-    animId=requestAnimationFrame(draw);
-  }
-  resize();initParticles();draw();
-  const obs=new ResizeObserver(()=>{cancelAnimationFrame(animId);resize();initParticles();draw();});
-  obs.observe(canvas.parentElement);
-  const slide=canvas.closest('.slide');
-  const mo=new MutationObserver(()=>{if(!slide.classList.contains('active'))cancelAnimationFrame(animId);else draw();});
-  if(slide)mo.observe(slide,{attributes:true,attributeFilter:['class']});
-})();
-</script>
+
 </div>
 <!-- SLIDE 3 -->
 <div class="slide has-roadmap" id="s3">
@@ -2581,58 +2505,7 @@ document.addEventListener('keydown',function(e){
   </div>
 </div>
 
-<script>
-(function(){
-  const svg = document.getElementById('bagSvg');
-  if(!svg) return;
-  const tt = document.getElementById('svgTooltip');
-  const ttRect = document.getElementById('ttRect');
-  const ttName = document.getElementById('ttName');
-  const ttCh = document.getElementById('ttCh');
-  const ttUse = document.getElementById('ttUse');
-  const groups = svg.querySelectorAll('.tube-group');
 
-  groups.forEach(g => {
-    g.style.cursor = 'pointer';
-    g.addEventListener('mouseenter', function(e) {
-      const name = this.dataset.name;
-      const ch = this.dataset.ch;
-      const use = this.dataset.use || '';
-      ttName.textContent = name;
-      ttCh.textContent = ch;
-      // Wrap use text
-      const words = use.split(', ');
-      ttUse.textContent = words.slice(0,3).join(', ');
-      const textW = Math.max(name.length * 7.5, use.length * 5.5, 180);
-      const w = Math.min(textW + 20, 280);
-      ttRect.setAttribute('width', w);
-      // Position
-      const bbox = this.getBBox();
-      const svgRect = svg.getBoundingClientRect();
-      const scaleX = svgRect.width / 960;
-      const scaleY = svgRect.height / 460;
-      let tx = bbox.x + bbox.width/2 - w/2;
-      let ty = bbox.y - 62;
-      if(ty < 5) ty = bbox.y + bbox.height + 5;
-      if(tx < 5) tx = 5;
-      if(tx + w > 955) tx = 955 - w;
-      tt.setAttribute('transform', `translate(${tx},${ty})`);
-      tt.setAttribute('opacity','1');
-    });
-    g.addEventListener('mouseleave', function() {
-      tt.setAttribute('opacity','0');
-    });
-    // Pulse animation on hover
-    const rects = g.querySelectorAll('rect');
-    g.addEventListener('mouseenter', function() {
-      rects.forEach(r => r.style.filter = 'brightness(1.3)');
-    });
-    g.addEventListener('mouseleave', function() {
-      rects.forEach(r => r.style.filter = '');
-    });
-  });
-})();
-</script>
 </div>
 <!-- SLIDE 44 -->
 <div class="slide has-roadmap" id="s44">
@@ -3097,6 +2970,9 @@ document.addEventListener('keydown',function(e){
 </div>
 
 <script>
+/* ═══════════════════════════════════════
+   CORE NAVIGATION
+═══════════════════════════════════════ */
 let current = 0;
 const slides = document.querySelectorAll('.slide');
 const total = slides.length;
@@ -3105,24 +2981,24 @@ function updateUI() {
   slides.forEach((s,i) => s.classList.toggle('active', i === current));
   document.getElementById('slide-counter').textContent = (current+1) + ' / ' + total;
   document.getElementById('progress-bar').style.width = ((current+1)/total*100) + '%';
+  // roadmap + audio
+  const curId = slides[current] && slides[current].id;
+  if(curId) {
+    updateRoadmaps(curId);
+    handleAudioForSlide(curId);
+    if(curId === 's_fin') {
+      startConfetti('confettiCanvas');
+    } else {
+      stopConfetti('confettiCanvas');
+    }
+  }
+  // init audio on first move
+  if(!audioStarted) { audioStarted=true; initAudio(); startCalmMusic(); }
 }
 
 function changeSlide(dir) {
   current = Math.max(0, Math.min(total-1, current + dir));
   updateUI();
-  // Init audio on first interaction
-  if(typeof audioCtx !== 'undefined' && !audioCtx && typeof initAudio === 'function') {
-    try { initAudio(); startCalmMusic(); } catch(e) {}
-  }
-  // Roadmap + audio + confetti
-  setTimeout(function() {
-    try {
-      const curId = slides[current] && slides[current].id;
-      if(curId && typeof updateRoadmaps === 'function') updateRoadmaps(curId);
-      if(curId && typeof handleAudioForSlide === 'function') handleAudioForSlide(curId);
-      if(curId && curId !== 's_fin' && typeof stopConfetti === 'function') stopConfetti('confettiCanvas');
-    } catch(e) {}
-  }, 10);
 }
 
 document.addEventListener('keydown', e => {
@@ -3146,68 +3022,18 @@ function selectOpt(btn, groupId, isCorrect) {
   }
 }
 
-<script>
-/* ═══════════════════════════════════════════
-   ROADMAP — progress tracking
-═══════════════════════════════════════════ */
-const RM_STEPS = [
-  {id:'intro',   slide:'s3'},
-  {id:'chaleur', slide:'s5'},
-  {id:'circu',   slide:'s13'},
-  {id:'baig',    slide:'s18'},
-  {id:'voyage',  slide:'s23'},
-  {id:'digest',  slide:'s29'},
-  {id:'urino',   slide:'s38'},
-  {id:'terrain', slide:'s44'},
-  {id:'cas',     slide:'s49'},
-  {id:'fin',     slide:'s_fin'},
-];
-
-function getActiveStepIndex(slideId) {
-  // Find which step the current slide belongs to
-  // Walk backward from current slide through RM_STEPS
-  const slideIds = Array.from(document.querySelectorAll('.slide')).map(s=>s.id);
-  const curIdx = slideIds.indexOf(slideId);
-  let stepIdx = -1;
-  for(let i = RM_STEPS.length-1; i >= 0; i--) {
-    const stepSlideIdx = slideIds.indexOf(RM_STEPS[i].slide);
-    if(stepSlideIdx !== -1 && curIdx >= stepSlideIdx) {
-      stepIdx = i;
-      break;
-    }
-  }
-  return stepIdx;
+function restartPresentation() {
+  current = 0;
+  stopConfetti('confettiCanvas');
+  updateUI();
+  stopMusic();
+  startCalmMusic();
+  fadeIn(1.2);
 }
 
-function updateRoadmaps(slideId) {
-  const activeStep = getActiveStepIndex(slideId);
-  document.querySelectorAll('.roadmap-bar').forEach(bar => {
-    const barStep = parseInt(bar.dataset.step);
-    bar.querySelectorAll('.roadmap-step').forEach((el,i) => {
-      const circle = el.querySelector('.roadmap-step-circle');
-      const label = el.querySelector('.roadmap-step-label');
-      circle.className = 'roadmap-step-circle';
-      label.className = 'roadmap-step-label';
-      if(i < barStep) {
-        circle.classList.add('done'); label.classList.add('done');
-      } else if(i === barStep) {
-        circle.classList.add('active'); label.classList.add('active');
-      } else {
-        circle.classList.add('upcoming'); label.classList.add('upcoming');
-      }
-    });
-    bar.querySelectorAll('.roadmap-connector').forEach((el,i) => {
-      const fill = el.querySelector('.roadmap-connector-fill');
-      if(i < barStep-1) fill.classList.add('done');
-      else if(i === barStep-1) fill.classList.add('half');
-      else { fill.classList.remove('done'); fill.classList.remove('half'); }
-    });
-  });
-}
-
-/* ═══════════════════════════════════════════
-   CONFETTI ENGINE
-═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   CONFETTI
+═══════════════════════════════════════ */
 function startConfetti(canvasId) {
   const canvas = document.getElementById(canvasId);
   if(!canvas) return;
@@ -3216,274 +3042,296 @@ function startConfetti(canvasId) {
   const ctx = canvas.getContext('2d');
   const colors = ['#2dd4bf','#f59e0b','#a78bfa','#f472b6','#34d399','#60a5fa','#fbbf24','#fff'];
   const pieces = Array.from({length:160}, () => ({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height - canvas.height,
-    r: Math.random()*6+3,
-    d: Math.random()*80+20,
-    color: colors[Math.floor(Math.random()*colors.length)],
-    tilt: Math.random()*10-10,
-    tiltAngle: 0,
-    tiltSpeed: Math.random()*.07+.05,
-    vx: Math.random()*2-1,
-    vy: Math.random()*3+1.5,
-    opacity: 1,
-    shape: Math.random()>0.5?'rect':'circle',
-    w: Math.random()*10+5,
-    h: Math.random()*6+3,
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height,
+    r:Math.random()*6+3, color:colors[Math.floor(Math.random()*colors.length)],
+    tiltAngle:0, tiltSpeed:Math.random()*.07+.05,
+    vx:Math.random()*2-1, vy:Math.random()*3+1.5,
+    shape:Math.random()>.5?'rect':'circle',
+    w:Math.random()*10+5, h:Math.random()*6+3,
   }));
-  let frame;
   function draw() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
     pieces.forEach(p => {
-      p.tiltAngle += p.tiltSpeed;
-      p.x += p.vx + Math.sin(p.tiltAngle)*0.5;
-      p.y += p.vy;
-      p.tilt = Math.sin(p.tiltAngle)*12;
-      if(p.y > canvas.height+20) { p.y=-20; p.x=Math.random()*canvas.width; }
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.tilt*Math.PI/180);
-      ctx.globalAlpha = p.opacity;
-      ctx.fillStyle = p.color;
-      if(p.shape==='circle') {
-        ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill();
-      } else {
-        ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-      }
+      p.tiltAngle+=p.tiltSpeed; p.x+=p.vx+Math.sin(p.tiltAngle)*.5; p.y+=p.vy;
+      if(p.y>canvas.height+20){p.y=-20;p.x=Math.random()*canvas.width;}
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(Math.sin(p.tiltAngle)*12*Math.PI/180);
+      ctx.fillStyle=p.color;
+      if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();}
+      else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     });
-    frame = requestAnimationFrame(draw);
+    canvas.__frame = requestAnimationFrame(draw);
   }
+  if(canvas.__frame) cancelAnimationFrame(canvas.__frame);
   draw();
-  canvas.__confettiFrame = frame;
 }
-
 function stopConfetti(canvasId) {
   const canvas = document.getElementById(canvasId);
-  if(canvas && canvas.__confettiFrame) {
-    cancelAnimationFrame(canvas.__confettiFrame);
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-  }
+  if(!canvas) return;
+  if(canvas.__frame) cancelAnimationFrame(canvas.__frame);
+  const ctx = canvas.getContext('2d');
+  if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 
-/* ═══════════════════════════════════════════
-   AUDIO ENGINE — Web Audio API
-═══════════════════════════════════════════ */
-let audioCtx = null, masterGain = null, musicNodes = [], musicMuted = false, musicStarted = false;
-window.audioCtx = null; // global ref
-const SECTION_SLIDES = ['s1','s3','s5','s13','s18','s23','s29','s38','s44','s49','s_fin'];
-
-function initAudio() {
-  if(audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-  masterGain.connect(audioCtx.destination);
+/* ═══════════════════════════════════════
+   PLAN CANVAS ANIMATION
+═══════════════════════════════════════ */
+function initPlanCanvas() {
+  const canvas = document.getElementById('planCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, pts=[], animId;
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  function init(){pts=[];for(let i=0;i<60;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random(),da:Math.random()*.01-.005,c:Math.random()>.7?'45,212,191':'245,158,11'});}
+  function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=p.da;if(p.a<=0||p.a>=1)p.da*=-1;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r||1,0,Math.PI*2);ctx.fillStyle=`rgba(${p.c},${p.a*.6})`;ctx.fill();});pts.forEach((p,i)=>{for(let j=i+1;j<pts.length;j++){const dx=p.x-pts[j].x,dy=p.y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(45,212,191,${.04*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}});animId=requestAnimationFrame(draw);}
+  resize();init();draw();
+  new ResizeObserver(()=>{cancelAnimationFrame(animId);resize();init();draw();}).observe(canvas.parentElement);
 }
 
-function createReverb() {
-  const conv = audioCtx.createConvolver();
-  const len = audioCtx.sampleRate * 2.5;
-  const buf = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
-  for(let c=0;c<2;c++) {
-    const d = buf.getChannelData(c);
-    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.5);
-  }
-  conv.buffer = buf;
-  return conv;
-}
-
-let reverbNode = null;
-function getOrCreateReverb() {
-  if(!reverbNode) reverbNode = createReverb();
-  return reverbNode;
-}
-
-function playNote(freq, startTime, duration, vol=0.12, wave='sine') {
-  if(!audioCtx || musicMuted) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const reverb = getOrCreateReverb();
-  const reverbGain = audioCtx.createGain();
-  reverbGain.gain.value = 0.35;
-  osc.type = wave;
-  osc.frequency.setValueAtTime(freq, startTime);
-  gain.gain.setValueAtTime(0, startTime);
-  gain.gain.linearRampToValueAtTime(vol, startTime + 0.08);
-  gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-  osc.connect(gain);
-  gain.connect(masterGain);
-  gain.connect(reverb);
-  reverb.connect(reverbGain);
-  reverbGain.connect(masterGain);
-  osc.start(startTime);
-  osc.stop(startTime + duration + 0.1);
-  musicNodes.push(osc);
-}
-
-// Soft pad chord
-function playPad(freqs, startTime, duration, vol=0.04) {
-  if(!audioCtx || musicMuted) return;
-  freqs.forEach(freq => {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0, startTime);
-    gain.gain.linearRampToValueAtTime(vol, startTime+0.6);
-    gain.gain.linearRampToValueAtTime(0.001, startTime+duration);
-    osc.connect(gain);
-    gain.connect(masterGain);
-    osc.start(startTime);
-    osc.stop(startTime+duration+0.1);
-    musicNodes.push(osc);
+/* ═══════════════════════════════════════
+   BAG SVG TOOLTIP
+═══════════════════════════════════════ */
+function initBagTooltip() {
+  const svg = document.getElementById('bagSvg');
+  if(!svg) return;
+  const tt=document.getElementById('svgTooltip');
+  const ttRect=document.getElementById('ttRect');
+  const ttName=document.getElementById('ttName');
+  const ttCh=document.getElementById('ttCh');
+  const ttUse=document.getElementById('ttUse');
+  if(!tt) return;
+  svg.querySelectorAll('.tube-group').forEach(g => {
+    g.style.cursor='pointer';
+    g.addEventListener('mouseenter',function(){
+      ttName.textContent=this.dataset.name||'';
+      ttCh.textContent=this.dataset.ch||'';
+      ttUse.textContent=(this.dataset.use||'').split(', ').slice(0,3).join(', ');
+      const w=Math.min(Math.max((this.dataset.name||'').length*7.5,180),280);
+      ttRect.setAttribute('width',w);
+      const bb=this.getBBox(),tx=Math.max(5,Math.min(bb.x+bb.width/2-w/2,955-w)),ty=bb.y-62<5?bb.y+bb.height+5:bb.y-62;
+      tt.setAttribute('transform',`translate(${tx},${ty})`);
+      tt.setAttribute('opacity','1');
+      this.querySelectorAll('rect').forEach(r=>r.style.filter='brightness(1.3)');
+    });
+    g.addEventListener('mouseleave',function(){
+      tt.setAttribute('opacity','0');
+      this.querySelectorAll('rect').forEach(r=>r.style.filter='');
+    });
   });
 }
 
-let melodyLoopId = null;
-const CALM_MELODY = [
-  // C maj pentatonic arpeggio — gentle piano-like
-  {f:261.6,d:0.9,v:0.13},{f:329.6,d:0.9,v:0.10},{f:392.0,d:0.9,v:0.09},{f:523.2,d:1.2,v:0.08},
-  {f:392.0,d:0.9,v:0.07},{f:329.6,d:0.9,v:0.09},{f:261.6,d:1.4,v:0.10},
-  {f:293.7,d:0.9,v:0.12},{f:370.0,d:0.9,v:0.09},{f:440.0,d:0.9,v:0.08},{f:587.3,d:1.2,v:0.07},
-  {f:440.0,d:0.9,v:0.07},{f:370.0,d:0.9,v:0.09},{f:293.7,d:1.8,v:0.10},
-  {f:261.6,d:0.9,v:0.11},{f:329.6,d:0.9,v:0.09},{f:392.0,d:0.9,v:0.08},{f:493.9,d:1.2,v:0.07},
-  {f:392.0,d:0.9,v:0.07},{f:329.6,d:0.9,v:0.09},{f:220.0,d:2.0,v:0.10},
+/* ═══════════════════════════════════════
+   AUDIO ENGINE
+═══════════════════════════════════════ */
+let audioCtx=null, masterGain=null, musicMuted=false, audioStarted=false, melodyTimer=null, currentMelody=null, reverbNode=null;
+const SECTION_SLIDES=['s1','s3','s5','s13','s18','s23','s29','s38','s44','s49','s_fin'];
+
+function initAudio(){
+  if(audioCtx) return;
+  try {
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    masterGain=audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0,audioCtx.currentTime);
+    masterGain.connect(audioCtx.destination);
+  } catch(e){}
+}
+
+function getReverb(){
+  if(reverbNode) return reverbNode;
+  const c=audioCtx.createConvolver(),len=audioCtx.sampleRate*2.5,buf=audioCtx.createBuffer(2,len,audioCtx.sampleRate);
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.5);}
+  c.buffer=buf;reverbNode=c;return c;
+}
+
+function playNote(freq,t,dur,vol,wave){
+  if(!audioCtx||musicMuted)return;
+  try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain(),rv=getReverb(),rg=audioCtx.createGain();
+    rg.gain.value=.3;o.type=wave||'triangle';o.frequency.value=freq;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.08);g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.connect(g);g.connect(masterGain);g.connect(rv);rv.connect(rg);rg.connect(masterGain);
+    o.start(t);o.stop(t+dur+.1);
+  }catch(e){}
+}
+
+function playPad(freqs,t,dur,vol){
+  if(!audioCtx||musicMuted)return;
+  freqs.forEach(f=>{try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.03,t+.6);g.gain.linearRampToValueAtTime(.001,t+dur);
+    o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+dur+.1);
+  }catch(e){}});
+}
+
+const CALM=[
+  {f:261.6,d:.9,v:.12},{f:329.6,d:.9,v:.10},{f:392,d:.9,v:.09},{f:523.2,d:1.2,v:.08},
+  {f:392,d:.9,v:.07},{f:329.6,d:.9,v:.09},{f:261.6,d:1.4,v:.10},
+  {f:293.7,d:.9,v:.11},{f:370,d:.9,v:.09},{f:440,d:.9,v:.08},{f:587.3,d:1.2,v:.07},
+  {f:440,d:.9,v:.07},{f:370,d:.9,v:.09},{f:293.7,d:1.8,v:.10},
+  {f:261.6,d:.9,v:.11},{f:329.6,d:.9,v:.09},{f:392,d:.9,v:.08},{f:493.9,d:1.2,v:.07},
+  {f:392,d:.9,v:.07},{f:329.6,d:.9,v:.09},{f:220,d:2,.v:.10},
 ];
-const CALM_PADS = [
-  {fs:[261.6,329.6,392.0],d:6.0},
-  {fs:[261.6,329.6,392.0],d:6.0},
-  {fs:[293.7,370.0,440.0],d:6.0},
-  {fs:[261.6,329.6,493.9],d:6.0},
+const CALM_PADS=[{fs:[261.6,329.6,392],d:6},{fs:[261.6,329.6,392],d:6},{fs:[293.7,370,440],d:6},{fs:[261.6,329.6,493.9],d:6}];
+const FESTIVE=[
+  {f:523.2,d:.4,v:.11},{f:659.3,d:.4,v:.10},{f:783.9,d:.5,v:.09},{f:1046.5,d:.6,v:.08},
+  {f:880,d:.4,v:.08},{f:783.9,d:.4,v:.09},{f:659.3,d:.5,v:.10},{f:523.2,d:.7,v:.11},
+  {f:587.3,d:.4,v:.10},{f:739.9,d:.4,v:.09},{f:880,d:.5,v:.08},{f:1174.7,d:.6,v:.07},
+  {f:1046.5,d:.4,v:.07},{f:880,d:.4,v:.09},{f:739.9,d:.5,v:.10},{f:587.3,d:.9,v:.11},
 ];
 
-const FESTIVE_MELODY = [
-  {f:523.2,d:0.4,v:0.12},{f:659.3,d:0.4,v:0.11},{f:783.9,d:0.5,v:0.10},{f:1046.5,d:0.6,v:0.09},
-  {f:880.0,d:0.4,v:0.08},{f:783.9,d:0.4,v:0.09},{f:659.3,d:0.5,v:0.10},{f:523.2,d:0.7,v:0.11},
-  {f:587.3,d:0.4,v:0.10},{f:739.9,d:0.4,v:0.09},{f:880.0,d:0.5,v:0.08},{f:1174.7,d:0.6,v:0.08},
-  {f:1046.5,d:0.4,v:0.07},{f:880.0,d:0.4,v:0.09},{f:739.9,d:0.5,v:0.10},{f:587.3,d:0.9,v:0.11},
-];
-
-let currentMelody = 'calm';
-
-function scheduleMusic(melody, pads, startTime) {
-  if(!audioCtx || musicMuted) return;
-  // Pads
-  let padT = startTime;
-  if(pads) {
-    pads.forEach(p => { playPad(p.fs, padT, p.d, 0.04); padT += p.d; });
-  }
-  // Melody
-  let t = startTime;
-  melody.forEach(n => { playNote(n.f, t, n.d*1.3, n.v, 'triangle'); t += n.d; });
-  return t - startTime; // total duration
+function scheduleMelody(notes,pads){
+  if(!audioCtx||musicMuted)return 0;
+  let t=audioCtx.currentTime+.05,total=0;
+  if(pads){let pt=t;pads.forEach(p=>{playPad(p.fs,pt,p.d);pt+=p.d;});}
+  notes.forEach(n=>{playNote(n.f,t,n.d*1.3,n.v);t+=n.d;total+=n.d;});
+  return total;
 }
 
-function startCalmMusic() {
-  if(!audioCtx || musicMuted) return;
-  currentMelody = 'calm';
-  const dur = scheduleMusic(CALM_MELODY, CALM_PADS, audioCtx.currentTime + 0.05);
-  melodyLoopId = setInterval(() => {
-    if(currentMelody==='calm' && !musicMuted)
-      scheduleMusic(CALM_MELODY, CALM_PADS, audioCtx.currentTime + 0.05);
-  }, dur*1000 + 200);
+function startCalmMusic(){
+  if(currentMelody==='calm')return;
+  currentMelody='calm';
+  clearInterval(melodyTimer);
+  const dur=scheduleMelody(CALM,CALM_PADS);
+  melodyTimer=setInterval(()=>{if(currentMelody==='calm'&&!musicMuted)scheduleMelody(CALM,CALM_PADS);},dur*1000+300);
 }
 
-function startFestiveMusic() {
-  if(!audioCtx || musicMuted) return;
-  clearInterval(melodyLoopId);
-  currentMelody = 'festive';
-  const dur = scheduleMusic(FESTIVE_MELODY, null, audioCtx.currentTime + 0.05);
-  melodyLoopId = setInterval(() => {
-    if(currentMelody==='festive' && !musicMuted)
-      scheduleMusic(FESTIVE_MELODY, null, audioCtx.currentTime + 0.05);
-  }, dur*1000 + 200);
+function startFestiveMusic(){
+  if(currentMelody==='festive')return;
+  currentMelody='festive';
+  clearInterval(melodyTimer);
+  const dur=scheduleMelody(FESTIVE,null);
+  melodyTimer=setInterval(()=>{if(currentMelody==='festive'&&!musicMuted)scheduleMelody(FESTIVE,null);},dur*1000+300);
 }
 
-function stopMusic() {
-  clearInterval(melodyLoopId);
-  currentMelody = null;
-  if(masterGain) masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+function stopMusic(){
+  clearInterval(melodyTimer);
+  currentMelody=null;
 }
 
-function fadeIn(dur=1.2) {
-  if(!masterGain || musicMuted) return;
+function fadeIn(d){
+  if(!masterGain||musicMuted)return;
   masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-  masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-  masterGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + dur);
+  masterGain.gain.setValueAtTime(masterGain.gain.value||0,audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(1,audioCtx.currentTime+(d||1.2));
 }
-
-function fadeOut(dur=0.8) {
-  if(!masterGain) return;
+function fadeOut(d){
+  if(!masterGain)return;
   masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-  masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-  masterGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  masterGain.gain.setValueAtTime(masterGain.gain.value||0,audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(.001,audioCtx.currentTime+(d||.8));
 }
 
-function handleAudioForSlide(slideId) {
-  if(!audioCtx || musicMuted) return;
-  if(slideId === 's_fin') {
-    // Stop calm, start festive
-    fadeOut(0.5);
-    setTimeout(() => {
-      stopMusic();
-      masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-      startFestiveMusic();
-      fadeIn(1.5);
-      startConfetti('confettiCanvas');
-    }, 600);
-  } else if(SECTION_SLIDES.includes(slideId)) {
-    if(currentMelody !== 'calm') {
-      stopMusic();
-      startCalmMusic();
-    }
+function handleAudioForSlide(id){
+  if(!audioCtx||musicMuted)return;
+  if(id==='s_fin'){
+    fadeOut(.5);setTimeout(()=>{stopMusic();masterGain.gain.setValueAtTime(0,audioCtx.currentTime);startFestiveMusic();fadeIn(1.5);},600);
+  } else if(SECTION_SLIDES.includes(id)||id==='s1'){
+    if(currentMelody!=='calm')startCalmMusic();
     fadeIn(1.2);
   } else {
-    fadeOut(0.8);
+    fadeOut(.8);
   }
 }
 
-/* hook removed - integrated below */
+/* ═══════════════════════════════════════
+   ROADMAP
+═══════════════════════════════════════ */
+const RM_SLIDES=['s3','s5','s13','s18','s23','s29','s38','s44','s49','s_fin'];
 
-/* ═══════════════════════════════════════════
+function getStepIndex(slideId){
+  const allIds=Array.from(slides).map(s=>s.id);
+  const curIdx=allIds.indexOf(slideId);
+  let best=-1;
+  RM_SLIDES.forEach((s,i)=>{const si=allIds.indexOf(s);if(si!==-1&&curIdx>=si)best=i;});
+  return best;
+}
+
+function updateRoadmaps(slideId){
+  const step=getStepIndex(slideId);
+  document.querySelectorAll('.roadmap-bar').forEach(bar=>{
+    const barStep=parseInt(bar.dataset.step)||0;
+    bar.querySelectorAll('.roadmap-step').forEach((el,i)=>{
+      const c=el.querySelector('.roadmap-step-circle'),l=el.querySelector('.roadmap-step-label');
+      if(!c||!l)return;
+      c.className='roadmap-step-circle '+(i<barStep?'done':i===barStep?'active':'upcoming');
+      l.className='roadmap-step-label '+(i<barStep?'done':i===barStep?'active':'upcoming');
+    });
+    bar.querySelectorAll('.roadmap-connector').forEach((el,i)=>{
+      const f=el.querySelector('.roadmap-connector-fill');
+      if(!f)return;
+      f.className='roadmap-connector-fill'+(i<barStep-1?' done':i===barStep-1?' half':'');
+    });
+  });
+}
+
+/* ═══════════════════════════════════════
    MUSIC TOGGLE BUTTON
-═══════════════════════════════════════════ */
-const musicBtn = document.createElement('button');
-musicBtn.id = 'musicToggle';
-musicBtn.innerHTML = '🎵';
-musicBtn.title = 'Couper / Activer la musique';
-musicBtn.style.cssText = 'position:fixed;bottom:18px;right:18px;z-index:200;width:38px;height:38px;border-radius:50%;background:rgba(10,22,40,.85);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(6px)';
-musicBtn.addEventListener('click', () => {
-  try {
-    musicMuted = !musicMuted;
-    if(musicMuted) {
-      if(typeof fadeOut === 'function') fadeOut(0.4);
-      musicBtn.innerHTML = '🔇';
-      musicBtn.style.color = '#64748b';
-      musicBtn.style.borderColor = 'rgba(100,116,139,.3)';
-    } else {
-      if(!audioCtx) { initAudio(); startCalmMusic(); }
-      if(typeof fadeIn === 'function') fadeIn(0.6);
-      musicBtn.innerHTML = '🎵';
-      musicBtn.style.color = '#2dd4bf';
-      musicBtn.style.borderColor = 'rgba(45,212,191,.3)';
-    }
-  } catch(e) { console.log('audio btn:', e); }
+═══════════════════════════════════════ */
+const musicBtn=document.createElement('button');
+musicBtn.innerHTML='🎵';
+musicBtn.title='Musique on/off';
+musicBtn.style.cssText='position:fixed;bottom:18px;right:18px;z-index:300;width:38px;height:38px;border-radius:50%;background:rgba(10,22,40,.85);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(6px)';
+musicBtn.addEventListener('click',()=>{
+  musicMuted=!musicMuted;
+  if(musicMuted){fadeOut(.4);musicBtn.innerHTML='🔇';musicBtn.style.color='#64748b';}
+  else{if(!audioCtx){initAudio();startCalmMusic();}fadeIn(.6);musicBtn.innerHTML='🎵';musicBtn.style.color='#2dd4bf';}
 });
 document.body.appendChild(musicBtn);
 
-// Init roadmap on load
-window.addEventListener('load', () => {
-  try {
-    const allSlides = document.querySelectorAll('.slide');
-    const curId = (allSlides[current] && allSlides[current].id) || 's1';
-    if(typeof updateRoadmaps === 'function') updateRoadmaps(curId);
-  } catch(e) { console.log('roadmap init:', e); }
+/* ═══════════════════════════════════════
+   LOGIN - start music on submit
+═══════════════════════════════════════ */
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  const card=document.getElementById('loginCard');
+  if(u==='DrHind'&&p==='Hind2026!'){
+    if(!audioCtx){initAudio();startCalmMusic();audioStarted=true;}
+    fadeIn(1.5);
+    document.getElementById('login-overlay').style.transition='opacity .6s';
+    document.getElementById('login-overlay').style.opacity='0';
+    setTimeout(()=>document.getElementById('login-overlay').classList.add('hidden'),600);
+  } else {
+    err.classList.add('show');
+    card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');
+    document.getElementById('loginPass').value='';
+    setTimeout(()=>err.classList.remove('show'),3000);
+  }
+}
+
+function togglePassword(){
+  const inp=document.getElementById('loginPass'),icon=document.getElementById('togglePw');
+  if(inp.type==='password'){inp.type='text';icon.innerHTML='&#128064;';}
+  else{inp.type='password';icon.innerHTML='&#128065;';}
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!document.getElementById('login-overlay').classList.contains('hidden'))doLogin();
+});
+
+/* ═══════════════════════════════════════
+   INIT ON LOAD
+═══════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  updateRoadmaps(slides[0]&&slides[0].id||'s1');
+  initPlanCanvas();
+  initBagTooltip();
+  // Start login canvas animation
+  (function(){
+    const c=document.getElementById('loginCanvas');
+    if(!c)return;
+    c.width=window.innerWidth;c.height=window.innerHeight;
+    const x=c.getContext('2d');
+    const pts=Array.from({length:80},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.8+.3,a:Math.random(),da:Math.random()*.008-.004,col:Math.random()>.6?'45,212,191':'245,158,11'}));
+    function tick(){x.clearRect(0,0,c.width,c.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=p.da;if(p.a<0||p.a>1)p.da*=-1;if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=`rgba(${p.col},${p.a*.5})`;x.fill();});pts.forEach((p,i)=>{for(let j=i+1;j<pts.length;j++){const dx=p.x-pts[j].x,dy=p.y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(pts[j].x,pts[j].y);x.strokeStyle=`rgba(45,212,191,${.05*(1-d/100)})`;x.lineWidth=.5;x.stroke();}}});requestAnimationFrame(tick);}
+    tick();
+    window.addEventListener('resize',()=>{c.width=window.innerWidth;c.height=window.innerHeight;});
+  })();
+  // Start music on login page
+  try{initAudio();startCalmMusic();fadeIn(2);audioStarted=true;}catch(e){}
 });
 </script>
-
-</script>
 </body>
-</html>
 </html>
