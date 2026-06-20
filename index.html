@@ -1339,16 +1339,677 @@ document.addEventListener('keydown',function(e){
 </div>
 <!-- SLIDE 43 -->
 <div class="slide" id="s43">
-  <div class="content-slide">
-    <div class="slide-header"><div class="icon">🧳</div><h2>Trousse Homéopathique — Les Indispensables</h2></div>
-    <div class="slide-body">
-      <div style="flex:1;overflow-y:auto">
-        <div class="trousse-grid">
-          <div class="trousse-item"><span class="tname">Aconit</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Apis mellifica</span><span class="tch">9-15 CH</span></div><div class="trousse-item"><span class="tname">Antimonium crudum</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Arnica montana</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Arsenicum album</span><span class="tch">9-15 CH</span></div><div class="trousse-item"><span class="tname">Belladonna</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Borax</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Bryonia</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Cantharis</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Carbo vegetabilis</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Chamomilla</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">China rubra</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Cocculus indicus</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Coffea cruda</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Colocynthis</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Cuprum metallicum</span><span class="tch">5 CH</span></div><div class="trousse-item"><span class="tname">Dulcamara</span><span class="tch">5 CH</span></div><div class="trousse-item"><span class="tname">Euphrasia</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Gelsemium</span><span class="tch">9-15 CH</span></div><div class="trousse-item"><span class="tname">Hepar sulfuris</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Histaminum</span><span class="tch">5-15 CH</span></div><div class="trousse-item"><span class="tname">Hypericum</span><span class="tch">5-15 CH</span></div><div class="trousse-item"><span class="tname">Ignatia</span><span class="tch">9-15 CH</span></div><div class="trousse-item"><span class="tname">Ipeca</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Ledum palustre</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Lycopodium</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Magnesia phos.</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Mercurius sol.</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Nux vomica</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Podophyllum</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Poumon histamine</span><span class="tch">15 CH</span></div><div class="trousse-item"><span class="tname">Pulsatilla</span><span class="tch">9-15 CH</span></div><div class="trousse-item"><span class="tname">Rhus tox.</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Ruta graveolens</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Staphysagria</span><span class="tch">15 CH</span></div><div class="trousse-item"><span class="tname">Sulfur</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Tabacum</span><span class="tch">5-9 CH</span></div><div class="trousse-item"><span class="tname">Urtica urens</span><span class="tch">5 CH</span></div><div class="trousse-item"><span class="tname">Vaccinotoxinum</span><span class="tch">9 CH</span></div><div class="trousse-item"><span class="tname">Veratrum album</span><span class="tch">5-9 CH</span></div>
-        </div>
-      </div>
-    </div>
+<style>
+.bag-scene{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0a1628 0%,#0d1e35 60%,#081428 100%);position:relative;overflow:hidden;padding:10px 0 4px}
+.bag-title{position:relative;z-index:5;text-align:center;margin-bottom:8px}
+.bag-title .eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2dd4bf;margin-bottom:4px}
+.bag-title h2{font-size:clamp(16px,2vw,24px);font-weight:700;color:#fff}
+.bag-title h2 span{color:#f59e0b}
+.bag-wrap{position:relative;z-index:4;width:94%;max-width:960px}
+.bag-svg-container{width:100%;position:relative}
+
+/* Tube homéopathique — apparence réaliste */
+.tube{display:inline-flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s;user-select:none}
+.tube:hover{transform:translateY(-4px) scale(1.08)}
+.tube:hover .tube-label-bubble{opacity:1;transform:translateY(-2px)}
+.tube-body{width:28px;height:56px;border-radius:4px 4px 12px 12px;position:relative;display:flex;flex-direction:column;align-items:center;box-shadow:inset -3px 0 6px rgba(0,0,0,.3),inset 2px 0 4px rgba(255,255,255,.12)}
+.tube-cap{width:18px;height:10px;border-radius:3px 3px 0 0;margin-bottom:0;box-shadow:inset 0 2px 4px rgba(255,255,255,.2)}
+.tube-label{width:22px;height:30px;border-radius:2px;margin:4px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.tube-name{font-size:5px;font-weight:700;color:rgba(10,22,40,.9);text-align:center;line-height:1.1;letter-spacing:.2px}
+.tube-ch{font-size:4.5px;color:rgba(10,22,40,.7);font-weight:600}
+.tube-bottom{width:16px;height:6px;border-radius:0 0 8px 8px;background:rgba(0,0,0,.15)}
+.tube-label-bubble{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(4px);background:rgba(13,30,53,.97);border:1px solid rgba(45,212,191,.4);border-radius:8px;padding:5px 9px;font-size:11px;color:#fff;white-space:nowrap;pointer-events:none;opacity:0;transition:all .2s;z-index:20;font-weight:600}
+.tube-label-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:rgba(45,212,191,.4)}
+.tube-sub-bubble{font-size:9px;color:#2dd4bf;font-weight:400;display:block;margin-top:1px}
+
+/* Zones dans la trousse */
+.bag-zone{position:absolute;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:3px 5px;font-size:8px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:.5px;text-transform:uppercase;z-index:3}
+
+/* Légende */
+.bag-legend{display:flex;gap:10px;justify-content:center;margin-top:6px;flex-wrap:wrap;position:relative;z-index:5}
+.bag-leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)}
+.bag-leg-dot{width:10px;height:10px;border-radius:2px}
+</style>
+<div class="bag-scene">
+  <div class="bag-title">
+    <div class="eyebrow">Trousse homéopathique</div>
+    <h2>La Trousse de <span>Vacances</span> — 40 Remèdes Indispensables</h2>
   </div>
+
+  <div class="bag-wrap">
+    <svg id="bagSvg" viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+      <defs>
+        <filter id="bagShadow" x="-5%" y="-5%" width="110%" height="120%">
+          <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,.5)"/>
+        </filter>
+        <filter id="glowT" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id="bagBody" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#e07b2a"/>
+          <stop offset="40%" stop-color="#c96820"/>
+          <stop offset="100%" stop-color="#a0500f"/>
+        </linearGradient>
+        <linearGradient id="bagFlap" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#d4701e"/>
+          <stop offset="100%" stop-color="#b55c15"/>
+        </linearGradient>
+        <linearGradient id="zipGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#888"/>
+          <stop offset="50%" stop-color="#ddd"/>
+          <stop offset="100%" stop-color="#888"/>
+        </linearGradient>
+        <linearGradient id="innerBg" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a3a5c"/>
+          <stop offset="100%" stop-color="#0d2240"/>
+        </linearGradient>
+        <!-- Cap gradients per color -->
+        <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0d9488"/><stop offset="100%" stop-color="#2dd4bf"/></linearGradient>
+        <linearGradient id="gAmber" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#fbbf24"/></linearGradient>
+        <linearGradient id="gRed" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#b91c1c"/><stop offset="100%" stop-color="#f87171"/></linearGradient>
+        <linearGradient id="gPurple" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient>
+        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#15803d"/><stop offset="100%" stop-color="#4ade80"/></linearGradient>
+        <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#93c5fd"/></linearGradient>
+        <linearGradient id="gPink" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#be185d"/><stop offset="100%" stop-color="#f9a8d4"/></linearGradient>
+      </defs>
+
+      <!-- ═══ SAC TROUSSE CORPS ═══ -->
+      <!-- Ombre portée -->
+      <ellipse cx="480" cy="455" rx="440" ry="12" fill="rgba(0,0,0,.35)"/>
+      <!-- Corps principal de la trousse -->
+      <rect x="30" y="80" width="900" height="360" rx="28" ry="28" fill="url(#bagBody)" filter="url(#bagShadow)"/>
+      <!-- Coutures décoratives extérieures -->
+      <rect x="38" y="88" width="884" height="344" rx="22" ry="22" fill="none" stroke="#f0a060" stroke-width="1.5" stroke-dasharray="6,4" opacity=".4"/>
+      <!-- Intérieur ouvert (fond de trousse) -->
+      <rect x="55" y="105" width="850" height="318" rx="16" ry="16" fill="url(#innerBg)"/>
+      <!-- Reflet brillant sur le cuir -->
+      <rect x="32" y="82" width="896" height="60" rx="28" ry="28" fill="rgba(255,255,255,.06)"/>
+      <!-- Fermeture éclair en haut -->
+      <rect x="55" y="100" width="850" height="8" rx="4" fill="url(#zipGrad)" opacity=".8"/>
+      <!-- Petits dents de fermeture éclair -->
+      <g fill="#aaa" opacity=".6">
+        <rect x="62" y="101" width="4" height="6" rx="1"/><rect x="72" y="101" width="4" height="6" rx="1"/><rect x="82" y="101" width="4" height="6" rx="1"/><rect x="92" y="101" width="4" height="6" rx="1"/><rect x="102" y="101" width="4" height="6" rx="1"/>
+        <rect x="112" y="101" width="4" height="6" rx="1"/><rect x="122" y="101" width="4" height="6" rx="1"/><rect x="132" y="101" width="4" height="6" rx="1"/><rect x="142" y="101" width="4" height="6" rx="1"/><rect x="152" y="101" width="4" height="6" rx="1"/>
+        <rect x="162" y="101" width="4" height="6" rx="1"/><rect x="172" y="101" width="4" height="6" rx="1"/><rect x="182" y="101" width="4" height="6" rx="1"/><rect x="192" y="101" width="4" height="6" rx="1"/><rect x="202" y="101" width="4" height="6" rx="1"/>
+        <rect x="212" y="101" width="4" height="6" rx="1"/><rect x="222" y="101" width="4" height="6" rx="1"/><rect x="232" y="101" width="4" height="6" rx="1"/><rect x="242" y="101" width="4" height="6" rx="1"/><rect x="252" y="101" width="4" height="6" rx="1"/>
+        <rect x="262" y="101" width="4" height="6" rx="1"/><rect x="272" y="101" width="4" height="6" rx="1"/><rect x="282" y="101" width="4" height="6" rx="1"/><rect x="292" y="101" width="4" height="6" rx="1"/><rect x="302" y="101" width="4" height="6" rx="1"/>
+        <rect x="312" y="101" width="4" height="6" rx="1"/><rect x="322" y="101" width="4" height="6" rx="1"/><rect x="332" y="101" width="4" height="6" rx="1"/><rect x="342" y="101" width="4" height="6" rx="1"/><rect x="352" y="101" width="4" height="6" rx="1"/>
+        <rect x="362" y="101" width="4" height="6" rx="1"/><rect x="372" y="101" width="4" height="6" rx="1"/><rect x="382" y="101" width="4" height="6" rx="1"/><rect x="392" y="101" width="4" height="6" rx="1"/><rect x="402" y="101" width="4" height="6" rx="1"/>
+        <rect x="412" y="101" width="4" height="6" rx="1"/><rect x="422" y="101" width="4" height="6" rx="1"/><rect x="432" y="101" width="4" height="6" rx="1"/><rect x="442" y="101" width="4" height="6" rx="1"/><rect x="452" y="101" width="4" height="6" rx="1"/>
+        <rect x="462" y="101" width="4" height="6" rx="1"/><rect x="472" y="101" width="4" height="6" rx="1"/><rect x="482" y="101" width="4" height="6" rx="1"/><rect x="492" y="101" width="4" height="6" rx="1"/><rect x="502" y="101" width="4" height="6" rx="1"/>
+        <rect x="512" y="101" width="4" height="6" rx="1"/><rect x="522" y="101" width="4" height="6" rx="1"/><rect x="532" y="101" width="4" height="6" rx="1"/><rect x="542" y="101" width="4" height="6" rx="1"/><rect x="552" y="101" width="4" height="6" rx="1"/>
+        <rect x="562" y="101" width="4" height="6" rx="1"/><rect x="572" y="101" width="4" height="6" rx="1"/><rect x="582" y="101" width="4" height="6" rx="1"/><rect x="592" y="101" width="4" height="6" rx="1"/><rect x="602" y="101" width="4" height="6" rx="1"/>
+        <rect x="612" y="101" width="4" height="6" rx="1"/><rect x="622" y="101" width="4" height="6" rx="1"/><rect x="632" y="101" width="4" height="6" rx="1"/><rect x="642" y="101" width="4" height="6" rx="1"/><rect x="652" y="101" width="4" height="6" rx="1"/>
+        <rect x="662" y="101" width="4" height="6" rx="1"/><rect x="672" y="101" width="4" height="6" rx="1"/><rect x="682" y="101" width="4" height="6" rx="1"/><rect x="692" y="101" width="4" height="6" rx="1"/><rect x="702" y="101" width="4" height="6" rx="1"/>
+        <rect x="712" y="101" width="4" height="6" rx="1"/><rect x="722" y="101" width="4" height="6" rx="1"/><rect x="732" y="101" width="4" height="6" rx="1"/><rect x="742" y="101" width="4" height="6" rx="1"/><rect x="752" y="101" width="4" height="6" rx="1"/>
+        <rect x="762" y="101" width="4" height="6" rx="1"/><rect x="772" y="101" width="4" height="6" rx="1"/><rect x="782" y="101" width="4" height="6" rx="1"/><rect x="792" y="101" width="4" height="6" rx="1"/><rect x="802" y="101" width="4" height="6" rx="1"/>
+        <rect x="812" y="101" width="4" height="6" rx="1"/><rect x="822" y="101" width="4" height="6" rx="1"/><rect x="832" y="101" width="4" height="6" rx="1"/><rect x="842" y="101" width="4" height="6" rx="1"/><rect x="852" y="101" width="4" height="6" rx="1"/>
+        <rect x="862" y="101" width="4" height="6" rx="1"/><rect x="872" y="101" width="4" height="6" rx="1"/><rect x="882" y="101" width="4" height="6" rx="1"/>
+      </g>
+      <!-- Curseur de fermeture éclair -->
+      <rect x="455" y="96" width="14" height="16" rx="3" fill="#ccc"/>
+      <rect x="458" y="99" width="8" height="10" rx="2" fill="#999"/>
+      <!-- Anneau -->
+      <circle cx="462" cy="104" r="3" fill="none" stroke="#bbb" stroke-width="1.5"/>
+
+      <!-- Poignée de la trousse -->
+      <path d="M380 82 Q420 52 480 50 Q540 52 580 82" fill="none" stroke="#b55c15" stroke-width="10" stroke-linecap="round"/>
+      <path d="M380 82 Q420 52 480 50 Q540 52 580 82" fill="none" stroke="#d4701e" stroke-width="6" stroke-linecap="round"/>
+      <!-- Attaches métalliques poignée -->
+      <rect x="372" y="76" width="16" height="14" rx="3" fill="#c0a040"/>
+      <rect x="572" y="76" width="16" height="14" rx="3" fill="#c0a040"/>
+
+      <!-- Séparateurs internes de zones -->
+      <line x1="310" y1="110" x2="310" y2="415" stroke="rgba(255,255,255,.08)" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="640" y1="110" x2="640" y2="415" stroke="rgba(255,255,255,.08)" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="55" y1="265" x2="905" y2="265" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- ÉTIQUETTES DE ZONES -->
+      <text x="182" y="124" font-size="8" fill="rgba(245,158,11,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">CHOCS · SOLEIL · THERMIQUE</text>
+      <text x="475" y="124" font-size="8" fill="rgba(167,139,250,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">DIGESTION · INFECTIONS</text>
+      <text x="772" y="124" font-size="8" fill="rgba(45,212,191,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">VOYAGE · TERRAIN · SPÉCIAUX</text>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- TUBES ROW 1 - Gauche: Chocs·Soleil (amber) -->
+      <!-- ══════════════════════════════════════════ -->
+      <!-- ARNICA 9CH -->
+      <g class="tube-group" data-name="Arnica Montana" data-ch="9 CH" data-use="Chocs, hématomes, traumatismes">
+        <rect x="68" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="68" y="146" width="26" height="52" rx="3" fill="#f0a030"/>
+        <rect x="73" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="81" y="161" font-size="5" fill="#7a3500" font-weight="700" text-anchor="middle">ARNICA</text>
+        <text x="81" y="167" font-size="4.5" fill="#7a3500" text-anchor="middle">MONTANA</text>
+        <text x="81" y="173" font-size="4.5" fill="#5a2a00" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="73" y="192" width="16" height="5" rx="2.5" fill="#c07820" opacity=".5"/>
+      </g>
+      <!-- BELLADONNA -->
+      <g class="tube-group" data-name="Belladonna" data-ch="9 CH" data-use="Fièvre, coup de chaleur, otite aiguë">
+        <rect x="100" y="138" width="26" height="8" rx="3" fill="url(#gRed)"/>
+        <rect x="100" y="146" width="26" height="52" rx="3" fill="#ef4444"/>
+        <rect x="105" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="113" y="161" font-size="5" fill="#5a0000" font-weight="700" text-anchor="middle">BELLA</text>
+        <text x="113" y="167" font-size="4.5" fill="#5a0000" text-anchor="middle">DONNA</text>
+        <text x="113" y="173" font-size="4.5" fill="#5a0000" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="105" y="192" width="16" height="5" rx="2.5" fill="#b91c1c" opacity=".5"/>
+      </g>
+      <!-- APIS -->
+      <g class="tube-group" data-name="Apis Mellifica" data-ch="9-15 CH" data-use="Piqûres, œdèmes, urticaire">
+        <rect x="132" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="132" y="146" width="26" height="52" rx="3" fill="#f59e0b"/>
+        <rect x="137" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="145" y="161" font-size="5" fill="#6b3500" font-weight="700" text-anchor="middle">APIS</text>
+        <text x="145" y="167" font-size="4.5" fill="#6b3500" text-anchor="middle">MELLIFICA</text>
+        <text x="145" y="173" font-size="4.5" fill="#6b3500" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="137" y="192" width="16" height="5" rx="2.5" fill="#d97706" opacity=".5"/>
+      </g>
+      <!-- ACONIT -->
+      <g class="tube-group" data-name="Aconitum" data-ch="9 CH" data-use="Fièvre brutale, angoisse, rhinite">
+        <rect x="164" y="138" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="164" y="146" width="26" height="52" rx="3" fill="#3b82f6"/>
+        <rect x="169" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="177" y="161" font-size="5" fill="#1e1b4b" font-weight="700" text-anchor="middle">ACONI</text>
+        <text x="177" y="167" font-size="4.5" fill="#1e1b4b" text-anchor="middle">TUM</text>
+        <text x="177" y="173" font-size="4.5" fill="#1e1b4b" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="169" y="192" width="16" height="5" rx="2.5" fill="#1d4ed8" opacity=".5"/>
+      </g>
+      <!-- GLONOINUM -->
+      <g class="tube-group" data-name="Glonoinum" data-ch="9 CH" data-use="Insolation, céphalée battante, pulsations carotides">
+        <rect x="196" y="138" width="26" height="8" rx="3" fill="url(#gRed)"/>
+        <rect x="196" y="146" width="26" height="52" rx="3" fill="#dc2626"/>
+        <rect x="201" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="209" y="161" font-size="5" fill="#450000" font-weight="700" text-anchor="middle">GLONO</text>
+        <text x="209" y="167" font-size="4.5" fill="#450000" text-anchor="middle">INUM</text>
+        <text x="209" y="173" font-size="4.5" fill="#450000" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="201" y="192" width="16" height="5" rx="2.5" fill="#991b1b" opacity=".5"/>
+      </g>
+      <!-- CANTHARIS -->
+      <g class="tube-group" data-name="Cantharis" data-ch="5-9 CH" data-use="Brûlures, coups de soleil vésiculeux, cystites">
+        <rect x="228" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="228" y="146" width="26" height="52" rx="3" fill="#ea580c"/>
+        <rect x="233" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="241" y="161" font-size="5" fill="#431407" font-weight="700" text-anchor="middle">CANTHAR</text>
+        <text x="241" y="167" font-size="4.5" fill="#431407" text-anchor="middle">IS</text>
+        <text x="241" y="173" font-size="4.5" fill="#431407" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="233" y="192" width="16" height="5" rx="2.5" fill="#c2410c" opacity=".5"/>
+      </g>
+      <!-- LEDUM -->
+      <g class="tube-group" data-name="Ledum Palustre" data-ch="5-9 CH" data-use="Piqûres punctiformes, ecchymoses, moustiques">
+        <rect x="260" y="138" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="260" y="146" width="26" height="52" rx="3" fill="#16a34a"/>
+        <rect x="265" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="273" y="161" font-size="5" fill="#052e16" font-weight="700" text-anchor="middle">LEDUM</text>
+        <text x="273" y="167" font-size="4.5" fill="#052e16" text-anchor="middle">PALUST.</text>
+        <text x="273" y="173" font-size="4.5" fill="#052e16" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="265" y="192" width="16" height="5" rx="2.5" fill="#15803d" opacity=".5"/>
+      </g>
+
+      <!-- ROW 1 - Centre: Digestion (purple/teal) -->
+      <!-- NUX VOMICA -->
+      <g class="tube-group" data-name="Nux Vomica" data-ch="9 CH" data-use="Excès, indigestion, constipation, insomnie 3h">
+        <rect x="324" y="138" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="324" y="146" width="26" height="52" rx="3" fill="#7c3aed"/>
+        <rect x="329" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="337" y="161" font-size="5" fill="#f5f3ff" font-weight="700" text-anchor="middle">NUX</text>
+        <text x="337" y="167" font-size="4.5" fill="#ede9fe" text-anchor="middle">VOMICA</text>
+        <text x="337" y="173" font-size="4.5" fill="#ddd6fe" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="329" y="192" width="16" height="5" rx="2.5" fill="#6d28d9" opacity=".5"/>
+      </g>
+      <!-- ARSENICUM -->
+      <g class="tube-group" data-name="Arsenicum Album" data-ch="9-15 CH" data-use="Intoxication alimentaire, gastro, diarrhée + anxiété">
+        <rect x="356" y="138" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="356" y="146" width="26" height="52" rx="3" fill="#0d9488"/>
+        <rect x="361" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="369" y="161" font-size="5" fill="#f0fdfa" font-weight="700" text-anchor="middle">ARSENIC</text>
+        <text x="369" y="167" font-size="4.5" fill="#ccfbf1" text-anchor="middle">ALBUM</text>
+        <text x="369" y="173" font-size="4.5" fill="#99f6e4" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="361" y="192" width="16" height="5" rx="2.5" fill="#0f766e" opacity=".5"/>
+      </g>
+      <!-- PODOPHYLLUM -->
+      <g class="tube-group" data-name="Podophyllum" data-ch="5-9 CH" data-use="Diarrhée explosive matinale, ventre du voyageur">
+        <rect x="388" y="138" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="388" y="146" width="26" height="52" rx="3" fill="#15803d"/>
+        <rect x="393" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="401" y="161" font-size="5" fill="#f0fdf4" font-weight="700" text-anchor="middle">PODOPH</text>
+        <text x="401" y="167" font-size="4.5" fill="#dcfce7" text-anchor="middle">YLLUM</text>
+        <text x="401" y="173" font-size="4.5" fill="#bbf7d0" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="393" y="192" width="16" height="5" rx="2.5" fill="#166534" opacity=".5"/>
+      </g>
+      <!-- COLOCYNTHIS -->
+      <g class="tube-group" data-name="Colocynthis" data-ch="9 CH" data-use="Coliques violentes, amélioration pression forte">
+        <rect x="420" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="420" y="146" width="26" height="52" rx="3" fill="#b45309"/>
+        <rect x="425" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="433" y="161" font-size="5" fill="#fff7ed" font-weight="700" text-anchor="middle">COLO</text>
+        <text x="433" y="167" font-size="4.5" fill="#fef3c7" text-anchor="middle">CYNTHIS</text>
+        <text x="433" y="173" font-size="4.5" fill="#fde68a" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="425" y="192" width="16" height="5" rx="2.5" fill="#92400e" opacity=".5"/>
+      </g>
+      <!-- LYCOPODIUM -->
+      <g class="tube-group" data-name="Lycopodium" data-ch="9 CH" data-use="Ballonnements 17h, foie, reflux, digestion lente">
+        <rect x="452" y="138" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="452" y="146" width="26" height="52" rx="3" fill="#6d28d9"/>
+        <rect x="457" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="465" y="161" font-size="5" fill="#f5f3ff" font-weight="700" text-anchor="middle">LYCOPO</text>
+        <text x="465" y="167" font-size="4.5" fill="#ede9fe" text-anchor="middle">DIUM</text>
+        <text x="465" y="173" font-size="4.5" fill="#ddd6fe" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="457" y="192" width="16" height="5" rx="2.5" fill="#5b21b6" opacity=".5"/>
+      </g>
+      <!-- IPECA -->
+      <g class="tube-group" data-name="Ipecacuanha" data-ch="9 CH" data-use="Nausées permanentes, vomissements qui ne soulagent pas">
+        <rect x="484" y="138" width="26" height="8" rx="3" fill="url(#gPink)"/>
+        <rect x="484" y="146" width="26" height="52" rx="3" fill="#db2777"/>
+        <rect x="489" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="497" y="161" font-size="5" fill="#fff1f2" font-weight="700" text-anchor="middle">IPECA</text>
+        <text x="497" y="167" font-size="4.5" fill="#ffe4e6" text-anchor="middle">CUANHA</text>
+        <text x="497" y="173" font-size="4.5" fill="#fecdd3" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="489" y="192" width="16" height="5" rx="2.5" fill="#be185d" opacity=".5"/>
+      </g>
+      <!-- PULSATILLA -->
+      <g class="tube-group" data-name="Pulsatilla" data-ch="9-15 CH" data-use="Indigestion corps gras, ORL, nostalgie, chaleur">
+        <rect x="516" y="138" width="26" height="8" rx="3" fill="url(#gPink)"/>
+        <rect x="516" y="146" width="26" height="52" rx="3" fill="#e879f9"/>
+        <rect x="521" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="529" y="161" font-size="5" fill="#4a044e" font-weight="700" text-anchor="middle">PULSA</text>
+        <text x="529" y="167" font-size="4.5" fill="#4a044e" text-anchor="middle">TILLA</text>
+        <text x="529" y="173" font-size="4.5" fill="#4a044e" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="521" y="192" width="16" height="5" rx="2.5" fill="#c026d3" opacity=".5"/>
+      </g>
+      <!-- MERCURIUS -->
+      <g class="tube-group" data-name="Mercurius Solubilis" data-ch="9 CH" data-use="Otite suppurée, angine, infections ORL avec sueur">
+        <rect x="548" y="138" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="548" y="146" width="26" height="52" rx="3" fill="#2563eb"/>
+        <rect x="553" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="561" y="161" font-size="5" fill="#eff6ff" font-weight="700" text-anchor="middle">MERCU</text>
+        <text x="561" y="167" font-size="4.5" fill="#dbeafe" text-anchor="middle">RIUS S.</text>
+        <text x="561" y="173" font-size="4.5" fill="#bfdbfe" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="553" y="192" width="16" height="5" rx="2.5" fill="#1d4ed8" opacity=".5"/>
+      </g>
+      <!-- CHINA -->
+      <g class="tube-group" data-name="China Officinalis" data-ch="9 CH" data-use="Épuisement après perte liquides, ballonnements">
+        <rect x="580" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="580" y="146" width="26" height="52" rx="3" fill="#ca8a04"/>
+        <rect x="585" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="593" y="161" font-size="5" fill="#422006" font-weight="700" text-anchor="middle">CHINA</text>
+        <text x="593" y="167" font-size="4.5" fill="#422006" text-anchor="middle">RUBRA</text>
+        <text x="593" y="173" font-size="4.5" fill="#422006" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="585" y="192" width="16" height="5" rx="2.5" fill="#a16207" opacity=".5"/>
+      </g>
+
+      <!-- ROW 1 - Droite: Voyage·Terrain (teal) -->
+      <!-- COCCULUS -->
+      <g class="tube-group" data-name="Cocculus Indicus" data-ch="5-9 CH" data-use="Mal des transports, vertige, jet lag">
+        <rect x="652" y="138" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="652" y="146" width="26" height="52" rx="3" fill="#0f766e"/>
+        <rect x="657" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="665" y="161" font-size="5" fill="#f0fdfa" font-weight="700" text-anchor="middle">COCCU</text>
+        <text x="665" y="167" font-size="4.5" fill="#ccfbf1" text-anchor="middle">LUS</text>
+        <text x="665" y="173" font-size="4.5" fill="#99f6e4" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="657" y="192" width="16" height="5" rx="2.5" fill="#134e4a" opacity=".5"/>
+      </g>
+      <!-- TABACUM -->
+      <g class="tube-group" data-name="Tabacum" data-ch="5-9 CH" data-use="Nausées mal de mer, pâleur, besoin d'air frais">
+        <rect x="684" y="138" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="684" y="146" width="26" height="52" rx="3" fill="#4d7c0f"/>
+        <rect x="689" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="697" y="161" font-size="5" fill="#f7fee7" font-weight="700" text-anchor="middle">TABA</text>
+        <text x="697" y="167" font-size="4.5" fill="#ecfccb" text-anchor="middle">CUM</text>
+        <text x="697" y="173" font-size="4.5" fill="#d9f99d" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="689" y="192" width="16" height="5" rx="2.5" fill="#3f6212" opacity=".5"/>
+      </g>
+      <!-- GELSEMIUM -->
+      <g class="tube-group" data-name="Gelsemium" data-ch="9-15 CH" data-use="Trac, insomnie chaleur, fatigue estivale, torpeur">
+        <rect x="716" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="716" y="146" width="26" height="52" rx="3" fill="#d97706"/>
+        <rect x="721" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="729" y="161" font-size="5" fill="#431407" font-weight="700" text-anchor="middle">GELSE</text>
+        <text x="729" y="167" font-size="4.5" fill="#431407" text-anchor="middle">MIUM</text>
+        <text x="729" y="173" font-size="4.5" fill="#431407" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="721" y="192" width="16" height="5" rx="2.5" fill="#b45309" opacity=".5"/>
+      </g>
+      <!-- HISTAMINUM -->
+      <g class="tube-group" data-name="Histaminum" data-ch="5-15 CH" data-use="Allergies, lucites, rhinite saisonnière">
+        <rect x="748" y="138" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="748" y="146" width="26" height="52" rx="3" fill="#a855f7"/>
+        <rect x="753" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="761" y="161" font-size="5" fill="#faf5ff" font-weight="700" text-anchor="middle">HISTAM</text>
+        <text x="761" y="167" font-size="4.5" fill="#f3e8ff" text-anchor="middle">INUM</text>
+        <text x="761" y="173" font-size="4.5" fill="#e9d5ff" text-anchor="middle" font-weight="600">5-15CH</text>
+        <rect x="753" y="192" width="16" height="5" rx="2.5" fill="#9333ea" opacity=".5"/>
+      </g>
+      <!-- HYPERICUM -->
+      <g class="tube-group" data-name="Hypericum" data-ch="5-15 CH" data-use="Douleurs nerveuses, coupures, herpès solaire">
+        <rect x="780" y="138" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="780" y="146" width="26" height="52" rx="3" fill="#eab308"/>
+        <rect x="785" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="793" y="161" font-size="5" fill="#422006" font-weight="700" text-anchor="middle">HYPERI</text>
+        <text x="793" y="167" font-size="4.5" fill="#422006" text-anchor="middle">CUM</text>
+        <text x="793" y="173" font-size="4.5" fill="#422006" text-anchor="middle" font-weight="600">5-15CH</text>
+        <rect x="785" y="192" width="16" height="5" rx="2.5" fill="#ca8a04" opacity=".5"/>
+      </g>
+      <!-- NATRUM MUR -->
+      <g class="tube-group" data-name="Natrum Muriaticum" data-ch="9-15 CH" data-use="Herpès solaire, coups de soleil récidivants, sécheresse">
+        <rect x="812" y="138" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="812" y="146" width="26" height="52" rx="3" fill="#1e40af"/>
+        <rect x="817" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="825" y="161" font-size="5" fill="#eff6ff" font-weight="700" text-anchor="middle">NATRUM</text>
+        <text x="825" y="167" font-size="4.5" fill="#dbeafe" text-anchor="middle">MUR.</text>
+        <text x="825" y="173" font-size="4.5" fill="#bfdbfe" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="817" y="192" width="16" height="5" rx="2.5" fill="#1e3a8a" opacity=".5"/>
+      </g>
+      <!-- VACCINOTOX -->
+      <g class="tube-group" data-name="Vaccinotoxinum" data-ch="9-15 CH" data-use="Prévention herpès récidivant, immunité">
+        <rect x="844" y="138" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="844" y="146" width="26" height="52" rx="3" fill="#2dd4bf"/>
+        <rect x="849" y="150" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="857" y="161" font-size="5" fill="#042f2e" font-weight="700" text-anchor="middle">VACCINO</text>
+        <text x="857" y="167" font-size="4.5" fill="#042f2e" text-anchor="middle">TOXINUM</text>
+        <text x="857" y="173" font-size="4.5" fill="#042f2e" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="849" y="192" width="16" height="5" rx="2.5" fill="#0d9488" opacity=".5"/>
+      </g>
+
+      <!-- ══════════ ROW 2 ══════════ -->
+      <!-- RHUS TOX -->
+      <g class="tube-group" data-name="Rhus Toxicodendron" data-ch="5-9 CH" data-use="Entorse, raideur matin, herpès, amélioration mouvement">
+        <rect x="68" y="280" width="26" height="8" rx="3" fill="url(#gRed)"/>
+        <rect x="68" y="288" width="26" height="52" rx="3" fill="#b91c1c"/>
+        <rect x="73" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="81" y="303" font-size="5" fill="#fff1f2" font-weight="700" text-anchor="middle">RHUS</text>
+        <text x="81" y="309" font-size="4.5" fill="#ffe4e6" text-anchor="middle">TOX.</text>
+        <text x="81" y="315" font-size="4.5" fill="#fecdd3" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="73" y="334" width="16" height="5" rx="2.5" fill="#991b1b" opacity=".5"/>
+      </g>
+      <!-- BRYONIA -->
+      <g class="tube-group" data-name="Bryonia Alba" data-ch="9 CH" data-use="Tout mouvement aggrave, brûlures gastriques, soif intense">
+        <rect x="100" y="280" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="100" y="288" width="26" height="52" rx="3" fill="#166534"/>
+        <rect x="105" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="113" y="303" font-size="5" fill="#f0fdf4" font-weight="700" text-anchor="middle">BRYO</text>
+        <text x="113" y="309" font-size="4.5" fill="#dcfce7" text-anchor="middle">NIA</text>
+        <text x="113" y="315" font-size="4.5" fill="#bbf7d0" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="105" y="334" width="16" height="5" rx="2.5" fill="#14532d" opacity=".5"/>
+      </g>
+      <!-- RUTA -->
+      <g class="tube-group" data-name="Ruta Graveolens" data-ch="5-9 CH" data-use="Tendons, périostite, genou du sportif, effort répété">
+        <rect x="132" y="280" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="132" y="288" width="26" height="52" rx="3" fill="#4d7c0f"/>
+        <rect x="137" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="145" y="303" font-size="5" fill="#f7fee7" font-weight="700" text-anchor="middle">RUTA</text>
+        <text x="145" y="309" font-size="4.5" fill="#ecfccb" text-anchor="middle">GRAVEO.</text>
+        <text x="145" y="315" font-size="4.5" fill="#d9f99d" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="137" y="334" width="16" height="5" rx="2.5" fill="#3f6212" opacity=".5"/>
+      </g>
+      <!-- STAPHYSAGRIA -->
+      <g class="tube-group" data-name="Staphysagria" data-ch="15 CH" data-use="Coupures nettes, cystite post-coïtale, piqûres">
+        <rect x="164" y="280" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="164" y="288" width="26" height="52" rx="3" fill="#6d28d9"/>
+        <rect x="169" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="177" y="303" font-size="5" fill="#faf5ff" font-weight="700" text-anchor="middle">STAPHY</text>
+        <text x="177" y="309" font-size="4.5" fill="#f3e8ff" text-anchor="middle">SAGRIA</text>
+        <text x="177" y="315" font-size="4.5" fill="#e9d5ff" text-anchor="middle" font-weight="600">15 CH</text>
+        <rect x="169" y="334" width="16" height="5" rx="2.5" fill="#5b21b6" opacity=".5"/>
+      </g>
+      <!-- CUPRUM -->
+      <g class="tube-group" data-name="Cuprum Metallicum" data-ch="5 CH" data-use="Crampes musculaires nocturnes, spasmes intenses">
+        <rect x="196" y="280" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="196" y="288" width="26" height="52" rx="3" fill="#c97c2e"/>
+        <rect x="201" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="209" y="303" font-size="5" fill="#431407" font-weight="700" text-anchor="middle">CUPRUM</text>
+        <text x="209" y="309" font-size="4.5" fill="#431407" text-anchor="middle">METAL.</text>
+        <text x="209" y="315" font-size="4.5" fill="#431407" text-anchor="middle" font-weight="600">5 CH</text>
+        <rect x="201" y="334" width="16" height="5" rx="2.5" fill="#a16207" opacity=".5"/>
+      </g>
+      <!-- MAG PHOS -->
+      <g class="tube-group" data-name="Magnesia Phosphorica" data-ch="9 CH" data-use="Crampes améliorées chaleur + pression, spasmes">
+        <rect x="228" y="280" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="228" y="288" width="26" height="52" rx="3" fill="#0369a1"/>
+        <rect x="233" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="241" y="303" font-size="5" fill="#f0f9ff" font-weight="700" text-anchor="middle">MAG.</text>
+        <text x="241" y="309" font-size="4.5" fill="#e0f2fe" text-anchor="middle">PHOSPH.</text>
+        <text x="241" y="315" font-size="4.5" fill="#bae6fd" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="233" y="334" width="16" height="5" rx="2.5" fill="#075985" opacity=".5"/>
+      </g>
+      <!-- URTICA -->
+      <g class="tube-group" data-name="Urtica Urens" data-ch="5 CH" data-use="Brûlures urticaire, méduses, orties, prurit brûlant">
+        <rect x="260" y="280" width="26" height="8" rx="3" fill="url(#gPink)"/>
+        <rect x="260" y="288" width="26" height="52" rx="3" fill="#be185d"/>
+        <rect x="265" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="273" y="303" font-size="5" fill="#fff1f2" font-weight="700" text-anchor="middle">URTICA</text>
+        <text x="273" y="309" font-size="4.5" fill="#ffe4e6" text-anchor="middle">URENS</text>
+        <text x="273" y="315" font-size="4.5" fill="#fecdd3" text-anchor="middle" font-weight="600">5 CH</text>
+        <rect x="265" y="334" width="16" height="5" rx="2.5" fill="#9f1239" opacity=".5"/>
+      </g>
+
+      <!-- ROW 2 Centre -->
+      <!-- CARBO VEG -->
+      <g class="tube-group" data-name="Carbo Vegetabilis" data-ch="9 CH" data-use="Épuisement, besoin d'air, ballonnements hauts, collapsus">
+        <rect x="324" y="280" width="26" height="8" rx="3" fill="url(#gGray,#555,#888)"/>
+        <rect x="324" y="288" width="26" height="52" rx="3" fill="#57534e"/>
+        <rect x="329" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="337" y="303" font-size="5" fill="#fafaf9" font-weight="700" text-anchor="middle">CARBO</text>
+        <text x="337" y="309" font-size="4.5" fill="#f5f5f4" text-anchor="middle">VEG.</text>
+        <text x="337" y="315" font-size="4.5" fill="#e7e5e4" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="329" y="334" width="16" height="5" rx="2.5" fill="#44403c" opacity=".5"/>
+      </g>
+      <!-- VERATRUM -->
+      <g class="tube-group" data-name="Veratrum Album" data-ch="5-9 CH" data-use="Gastro violente, effondrement, sueurs froides, prostration">
+        <rect x="356" y="280" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="356" y="288" width="26" height="52" rx="3" fill="#1e3a8a"/>
+        <rect x="361" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="369" y="303" font-size="5" fill="#eff6ff" font-weight="700" text-anchor="middle">VERAT.</text>
+        <text x="369" y="309" font-size="4.5" fill="#dbeafe" text-anchor="middle">ALBUM</text>
+        <text x="369" y="315" font-size="4.5" fill="#bfdbfe" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="361" y="334" width="16" height="5" rx="2.5" fill="#1e3a8a" opacity=".5"/>
+      </g>
+      <!-- ALOE -->
+      <g class="tube-group" data-name="Aloe Socotrina" data-ch="9 CH" data-use="Hémorroïdes bleues, diarrhée impérieuse, brûlures amélio froid">
+        <rect x="388" y="280" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="388" y="288" width="26" height="52" rx="3" fill="#0e7490"/>
+        <rect x="393" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="401" y="303" font-size="5" fill="#ecfeff" font-weight="700" text-anchor="middle">ALOE</text>
+        <text x="401" y="309" font-size="4.5" fill="#cffafe" text-anchor="middle">SOCOTR.</text>
+        <text x="401" y="315" font-size="4.5" fill="#a5f3fc" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="393" y="334" width="16" height="5" rx="2.5" fill="#155e75" opacity=".5"/>
+      </g>
+      <!-- HAMAMELIS -->
+      <g class="tube-group" data-name="Hamamelis" data-ch="9 CH" data-use="Varices, jambes lourdes, hémorroïdes, coups de marteau">
+        <rect x="420" y="280" width="26" height="8" rx="3" fill="url(#gRed)"/>
+        <rect x="420" y="288" width="26" height="52" rx="3" fill="#9f1239"/>
+        <rect x="425" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="433" y="303" font-size="5" fill="#fff1f2" font-weight="700" text-anchor="middle">HAMAM</text>
+        <text x="433" y="309" font-size="4.5" fill="#ffe4e6" text-anchor="middle">ELIS</text>
+        <text x="433" y="315" font-size="4.5" fill="#fecdd3" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="425" y="334" width="16" height="5" rx="2.5" fill="#881337" opacity=".5"/>
+      </g>
+      <!-- CANTHARIS row2 - SEPIA -->
+      <g class="tube-group" data-name="Sepia Officinalis" data-ch="9-15 CH" data-use="Mycose vaginale, cystite, épuisement féminin, sueurs">
+        <rect x="452" y="280" width="26" height="8" rx="3" fill="url(#gPink)"/>
+        <rect x="452" y="288" width="26" height="52" rx="3" fill="#9d174d"/>
+        <rect x="457" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="465" y="303" font-size="5" fill="#fff1f2" font-weight="700" text-anchor="middle">SEPIA</text>
+        <text x="465" y="309" font-size="4.5" fill="#ffe4e6" text-anchor="middle">OFFIC.</text>
+        <text x="465" y="315" font-size="4.5" fill="#fecdd3" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="457" y="334" width="16" height="5" rx="2.5" fill="#831843" opacity=".5"/>
+      </g>
+      <!-- COCCULUS row2 - SULFUR -->
+      <g class="tube-group" data-name="Sulfur" data-ch="9 CH" data-use="Transpiration chaude fétide, prurit chaleur, terrain Sulfur">
+        <rect x="484" y="280" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="484" y="288" width="26" height="52" rx="3" fill="#a16207"/>
+        <rect x="489" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="497" y="303" font-size="5" fill="#fefce8" font-weight="700" text-anchor="middle">SULFUR</text>
+        <text x="497" y="309" font-size="4.5" fill="#fef9c3" text-anchor="middle">ALBUM</text>
+        <text x="497" y="315" font-size="4.5" fill="#fef08a" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="489" y="334" width="16" height="5" rx="2.5" fill="#854d0e" opacity=".5"/>
+      </g>
+      <!-- EUPHRASIA row2 -->
+      <g class="tube-group" data-name="Euphrasia" data-ch="5-9 CH" data-use="Conjonctivite, larmoiement corrosif, rhinite bénigne">
+        <rect x="516" y="280" width="26" height="8" rx="3" fill="url(#gGreen)"/>
+        <rect x="516" y="288" width="26" height="52" rx="3" fill="#15803d"/>
+        <rect x="521" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="529" y="303" font-size="5" fill="#f0fdf4" font-weight="700" text-anchor="middle">EUPHR</text>
+        <text x="529" y="309" font-size="4.5" fill="#dcfce7" text-anchor="middle">ASIA</text>
+        <text x="529" y="315" font-size="4.5" fill="#bbf7d0" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="521" y="334" width="16" height="5" rx="2.5" fill="#166534" opacity=".5"/>
+      </g>
+      <!-- ANTIMONIUM -->
+      <g class="tube-group" data-name="Antimonium Crudum" data-ch="9 CH" data-use="Indigestion sucrés/vin, langue blanche, vomissements">
+        <rect x="548" y="280" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="548" y="288" width="26" height="52" rx="3" fill="#7e22ce"/>
+        <rect x="553" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="561" y="303" font-size="5" fill="#faf5ff" font-weight="700" text-anchor="middle">ANTIM</text>
+        <text x="561" y="309" font-size="4.5" fill="#f3e8ff" text-anchor="middle">CRUDUM</text>
+        <text x="561" y="315" font-size="4.5" fill="#e9d5ff" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="553" y="334" width="16" height="5" rx="2.5" fill="#6b21a8" opacity=".5"/>
+      </g>
+      <!-- DULCAMARA -->
+      <g class="tube-group" data-name="Dulcamara" data-ch="5-9 CH" data-use="Rhinite froid humide, climatisation, otite piscine">
+        <rect x="580" y="280" width="26" height="8" rx="3" fill="url(#gBlue)"/>
+        <rect x="580" y="288" width="26" height="52" rx="3" fill="#0369a1"/>
+        <rect x="585" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="593" y="303" font-size="5" fill="#f0f9ff" font-weight="700" text-anchor="middle">DULCA</text>
+        <text x="593" y="309" font-size="4.5" fill="#e0f2fe" text-anchor="middle">MARA</text>
+        <text x="593" y="315" font-size="4.5" fill="#bae6fd" text-anchor="middle" font-weight="600">5-9CH</text>
+        <rect x="585" y="334" width="16" height="5" rx="2.5" fill="#075985" opacity=".5"/>
+      </g>
+
+      <!-- ROW 2 Droite -->
+      <!-- IGNATIA -->
+      <g class="tube-group" data-name="Ignatia Amara" data-ch="9-15 CH" data-use="Nostalgie, chagrin, insomnie émotionnelle, boule gorge">
+        <rect x="652" y="280" width="26" height="8" rx="3" fill="url(#gPink)"/>
+        <rect x="652" y="288" width="26" height="52" rx="3" fill="#c026d3"/>
+        <rect x="657" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="665" y="303" font-size="5" fill="#fdf4ff" font-weight="700" text-anchor="middle">IGNATIA</text>
+        <text x="665" y="309" font-size="4.5" fill="#fae8ff" text-anchor="middle">AMARA</text>
+        <text x="665" y="315" font-size="4.5" fill="#f5d0fe" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="657" y="334" width="16" height="5" rx="2.5" fill="#a21caf" opacity=".5"/>
+      </g>
+      <!-- COFFEA -->
+      <g class="tube-group" data-name="Coffea Cruda" data-ch="9 CH" data-use="Insomnie idées, hypersensibilité, excitation nocturne">
+        <rect x="684" y="280" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="684" y="288" width="26" height="52" rx="3" fill="#78350f"/>
+        <rect x="689" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="697" y="303" font-size="5" fill="#fef3c7" font-weight="700" text-anchor="middle">COFFEA</text>
+        <text x="697" y="309" font-size="4.5" fill="#fde68a" text-anchor="middle">CRUDA</text>
+        <text x="697" y="315" font-size="4.5" fill="#fcd34d" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="689" y="334" width="16" height="5" rx="2.5" fill="#451a03" opacity=".5"/>
+      </g>
+      <!-- HEPAR SULFUR -->
+      <g class="tube-group" data-name="Hepar Sulfuris" data-ch="9 CH" data-use="Otite suppurée, hypersensibilité douleur, aggrav froid">
+        <rect x="716" y="280" width="26" height="8" rx="3" fill="url(#gAmber)"/>
+        <rect x="716" y="288" width="26" height="52" rx="3" fill="#92400e"/>
+        <rect x="721" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="729" y="303" font-size="5" fill="#fef3c7" font-weight="700" text-anchor="middle">HEPAR</text>
+        <text x="729" y="309" font-size="4.5" fill="#fde68a" text-anchor="middle">SULFUR</text>
+        <text x="729" y="315" font-size="4.5" fill="#fcd34d" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="721" y="334" width="16" height="5" rx="2.5" fill="#6b2c0a" opacity=".5"/>
+      </g>
+      <!-- NAT CARB -->
+      <g class="tube-group" data-name="Natrum Carbonicum" data-ch="9-15 CH" data-use="Asthénie estivale, épuisement chaleur, céphalées solaires">
+        <rect x="748" y="280" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="748" y="288" width="26" height="52" rx="3" fill="#134e4a"/>
+        <rect x="753" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="761" y="303" font-size="5" fill="#f0fdfa" font-weight="700" text-anchor="middle">NAT.</text>
+        <text x="761" y="309" font-size="4.5" fill="#ccfbf1" text-anchor="middle">CARBON.</text>
+        <text x="761" y="315" font-size="4.5" fill="#99f6e4" text-anchor="middle" font-weight="600">9-15CH</text>
+        <rect x="753" y="334" width="16" height="5" rx="2.5" fill="#0d3330" opacity=".5"/>
+      </g>
+      <!-- POUMON HIST -->
+      <g class="tube-group" data-name="Poumon Histamine" data-ch="15 CH" data-use="Allergies respiratoires, asthme, protocole préventif">
+        <rect x="780" y="280" width="26" height="8" rx="3" fill="url(#gPurple)"/>
+        <rect x="780" y="288" width="26" height="52" rx="3" fill="#4c1d95"/>
+        <rect x="785" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="793" y="303" font-size="5" fill="#f5f3ff" font-weight="700" text-anchor="middle">POUMON</text>
+        <text x="793" y="309" font-size="4.5" fill="#ede9fe" text-anchor="middle">HISTAM.</text>
+        <text x="793" y="315" font-size="4.5" fill="#ddd6fe" text-anchor="middle" font-weight="600">15 CH</text>
+        <rect x="785" y="334" width="16" height="5" rx="2.5" fill="#3b0764" opacity=".5"/>
+      </g>
+      <!-- BORAX -->
+      <g class="tube-group" data-name="Borax" data-ch="9 CH" data-use="Herpès labial, aphtes, trous d'air avion, sursauts">
+        <rect x="812" y="280" width="26" height="8" rx="3" fill="url(#gTeal)"/>
+        <rect x="812" y="288" width="26" height="52" rx="3" fill="#0f766e"/>
+        <rect x="817" y="292" width="16" height="30" rx="1.5" fill="#fff3" opacity=".6"/>
+        <text x="825" y="303" font-size="5" fill="#f0fdfa" font-weight="700" text-anchor="middle">BORAX</text>
+        <text x="825" y="309" font-size="4.5" fill="#ccfbf1" text-anchor="middle">VENETA</text>
+        <text x="825" y="315" font-size="4.5" fill="#99f6e4" text-anchor="middle" font-weight="600">9 CH</text>
+        <rect x="817" y="334" width="16" height="5" rx="2.5" fill="#134e4a" opacity=".5"/>
+      </g>
+
+      <!-- Label CEDH-like sur la trousse -->
+      <rect x="390" y="60" width="180" height="18" rx="5" fill="rgba(45,212,191,.15)" stroke="rgba(45,212,191,.3)" stroke-width=".5"/>
+      <text x="480" y="72" font-size="9" fill="#2dd4bf" text-anchor="middle" font-weight="700" letter-spacing="1">Dr ENNAJI Hind · Homéopathie Estivale</text>
+
+      <!-- Tooltip interactif (géré en JS) -->
+      <g id="svgTooltip" opacity="0" pointer-events="none">
+        <rect id="ttRect" x="0" y="0" width="200" height="52" rx="8" fill="#0d1e35" stroke="#2dd4bf" stroke-width="1"/>
+        <text id="ttName" x="10" y="18" font-size="11" fill="#fff" font-weight="700"/>
+        <text id="ttCh" x="10" y="32" font-size="9.5" fill="#2dd4bf"/>
+        <text id="ttUse" x="10" y="45" font-size="8.5" fill="#94a3b8"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- LÉGENDE -->
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px;position:relative;z-index:5">
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8"><div style="width:10px;height:10px;background:#f59e0b;border-radius:2px"></div>Chocs · Soleil · Chaleur</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8"><div style="width:10px;height:10px;background:#7c3aed;border-radius:2px"></div>Digestion · Infections</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8"><div style="width:10px;height:10px;background:#0d9488;border-radius:2px"></div>Voyage · Terrain</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8"><div style="width:10px;height:10px;background:#ef4444;border-radius:2px"></div>Urgences · ORL</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8"><span style="font-size:11px">👆</span>Survoler un tube pour les indications</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const svg = document.getElementById('bagSvg');
+  if(!svg) return;
+  const tt = document.getElementById('svgTooltip');
+  const ttRect = document.getElementById('ttRect');
+  const ttName = document.getElementById('ttName');
+  const ttCh = document.getElementById('ttCh');
+  const ttUse = document.getElementById('ttUse');
+  const groups = svg.querySelectorAll('.tube-group');
+
+  groups.forEach(g => {
+    g.style.cursor = 'pointer';
+    g.addEventListener('mouseenter', function(e) {
+      const name = this.dataset.name;
+      const ch = this.dataset.ch;
+      const use = this.dataset.use || '';
+      ttName.textContent = name;
+      ttCh.textContent = ch;
+      // Wrap use text
+      const words = use.split(', ');
+      ttUse.textContent = words.slice(0,3).join(', ');
+      const textW = Math.max(name.length * 7.5, use.length * 5.5, 180);
+      const w = Math.min(textW + 20, 280);
+      ttRect.setAttribute('width', w);
+      // Position
+      const bbox = this.getBBox();
+      const svgRect = svg.getBoundingClientRect();
+      const scaleX = svgRect.width / 960;
+      const scaleY = svgRect.height / 460;
+      let tx = bbox.x + bbox.width/2 - w/2;
+      let ty = bbox.y - 62;
+      if(ty < 5) ty = bbox.y + bbox.height + 5;
+      if(tx < 5) tx = 5;
+      if(tx + w > 955) tx = 955 - w;
+      tt.setAttribute('transform', `translate(${tx},${ty})`);
+      tt.setAttribute('opacity','1');
+    });
+    g.addEventListener('mouseleave', function() {
+      tt.setAttribute('opacity','0');
+    });
+    // Pulse animation on hover
+    const rects = g.querySelectorAll('rect');
+    g.addEventListener('mouseenter', function() {
+      rects.forEach(r => r.style.filter = 'brightness(1.3)');
+    });
+    g.addEventListener('mouseleave', function() {
+      rects.forEach(r => r.style.filter = '');
+    });
+  });
+})();
+</script>
 </div>
 <!-- SLIDE 44 -->
 <div class="slide" id="s44">
