@@ -289,7 +289,7 @@ document.addEventListener('keydown',function(e){
 
 <div id="app">
 <div id="progress-bar" style="width:0%"></div>
-<div id="slide-counter">1 / 53</div>
+<div id="slide-counter">1 / 54</div>
 <button class="nav-btn" id="btn-prev" onclick="changeSlide(-1)">&#8592;</button>
 <button class="nav-btn" id="btn-next" onclick="changeSlide(1)">&#8594;</button>
 
@@ -1934,9 +1934,15 @@ document.addEventListener('keydown',function(e){
         <rect x="817" y="334" width="16" height="5" rx="2.5" fill="#134e4a" opacity=".5"/>
       </g>
 
-      <!-- Label CEDH-like sur la trousse -->
-      <rect x="390" y="60" width="180" height="18" rx="5" fill="rgba(45,212,191,.15)" stroke="rgba(45,212,191,.3)" stroke-width=".5"/>
-      <text x="480" y="72" font-size="9" fill="#2dd4bf" text-anchor="middle" font-weight="700" letter-spacing="1">Dr ENNAJI Hind · Homéopathie Estivale</text>
+      <!-- Label cuir gauche de la trousse -->
+      <rect x="36" y="160" width="14" height="80" rx="4" fill="#9a4a10" stroke="#7a3808" stroke-width="1"/>
+      <rect x="39" y="163" width="8" height="74" rx="2" fill="rgba(255,255,255,.06)"/>
+      <text x="43" y="220" font-size="7" fill="#f0c070" font-weight="700" text-anchor="middle" transform="rotate(-90,43,200)" letter-spacing="1.2">Dr ENNAJI Hind • Homéopathie Estivale</text>
+
+      <!-- ÉTIQUETTES DE ZONES ROW 2 (bas) -->
+      <text x="182" y="277" font-size="8" fill="rgba(239,68,68,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">SPORT · VEINES · GYNÉCO · PEAU</text>
+      <text x="475" y="277" font-size="8" fill="rgba(45,212,191,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">DIGESTIF · INFECTIONS · ORL</text>
+      <text x="772" y="277" font-size="8" fill="rgba(16,185,129,.5)" font-weight="700" letter-spacing="1" text-anchor="middle">SOMMEIL · TERRAIN · PRÉVENTION</text>
 
       <!-- Tooltip interactif (géré en JS) -->
       <g id="svgTooltip" opacity="0" pointer-events="none">
@@ -2172,6 +2178,54 @@ document.addEventListener('keydown',function(e){
         <div style="padding:0 50px 16px">
           <div class="alert-box info">💡 Conseil pratique : constituer la trousse selon le profil du voyageur. Un Arsenicum aura toujours Arsenicum + Podophyllum. Un Argentum aura Argentum + Gelsemium. Un Nux vomica aura Nux + Antimonium crudum.</div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE QUIZ TERRAIN -->
+<div class="slide" id="s48b">
+  <div class="quiz-slide">
+    <div class="quiz-header" style="background:linear-gradient(135deg,#166534,#15803d)">
+      <div class="quiz-badge">QUIZ TERRAIN</div>
+      <h2>Question Clinique — Profils Constitutionnels &amp; Terrain Estival</h2>
+    </div>
+    <div class="quiz-body">
+      <div class="flip-scene" onclick="flipCard(this)">
+        <div class="flip-card" id="fcT">
+          <div class="flip-face flip-front">
+            <div class="flip-label">❓ Cas clinique</div>
+            <div class="flip-question">
+              Patient de 38 ans. Chaque été :<br>
+              • <strong>Épuisement profond</strong> après exposition solaire même courte<br>
+              • Céphalées dès le soleil, hypotension matinale<br>
+              • Troubles digestifs dès repas un peu chargés<br>
+              • Se sent <strong>incapable de supporter la chaleur</strong><br>
+              • Amélioration nette à l'ombre et à la fraîcheur<br><br>
+              Quel est le remède de terrain <strong>clé de voûte</strong> de l'été pour ce patient ?
+            </div>
+            <div class="flip-hint">🔄 Cliquer pour révéler la réponse</div>
+          </div>
+          <div class="flip-face flip-back" style="background:linear-gradient(135deg,#052e16,#14532d)">
+            <div class="flip-label" style="color:#86efac">✅ Réponse</div>
+            <div class="flip-answer">
+              <strong style="font-size:20px;color:#4ade80">NATRUM CARBONICUM 9-15 CH</strong><br><br>
+              5 granules, 3 fois par jour tout l'été<br>
+              <span style="font-size:13px;color:#86efac">+ Glonoinum 9 CH en aigu si insolation</span>
+            </div>
+            <div class="flip-explication">
+              Natrum Carbonicum = grand remède de la <strong>sensibilité estivale à la chaleur</strong>. 
+              Épuisement disproportionné, céphalées solaires, hypotension, troubles digestifs dès excès léger. 
+              Profil : sensible à la chaleur · Distinguer de Sulfur (toujours trop chaud, fétide) et Pulsatilla (aggravation chaleur mais surtout corps gras, femme douce).
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-options" id="qoT">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:600">Choisir avant de retourner la carte :</div>
+        <button class="quiz-opt" onclick="selectOpt(this,'qoT',false)">A. Sulfur 9 CH</button>
+        <button class="quiz-opt" onclick="selectOpt(this,'qoT',true)">B. Natrum Carbonicum 9-15 CH</button>
+        <button class="quiz-opt" onclick="selectOpt(this,'qoT',false)">C. Gelsemium 9 CH</button>
+        <button class="quiz-opt" onclick="selectOpt(this,'qoT',false)">D. Pulsatilla 9 CH</button>
       </div>
     </div>
   </div>
